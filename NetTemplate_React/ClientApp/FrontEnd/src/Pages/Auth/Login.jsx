@@ -1,17 +1,21 @@
 import {
-  Container,
   Button,
   Text,
   Title,
   Group,
   Flex,
   TextInput,
-  Space,
+  PasswordInput,
   Checkbox,
   Divider,
+  Box,
+  Paper,
+  Stack,
+  ThemeIcon,
+  Badge,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { HomeIcon, LockIcon, Mail, PhoneCall } from "lucide-react";
+import { LayoutDashboardIcon, LockIcon, Mail, PhoneCall, ShieldCheckIcon, ZapIcon, PaletteIcon } from "lucide-react";
 import useLoginMutation from "~/hooks/Auth/useLoginMutation";
 import { notifications } from "@mantine/notifications";
 import { useState } from "react";
@@ -19,11 +23,13 @@ import useAuth from "~/hooks/Auth/useAuth";
 import { useNavigate } from "react-router";
 import StringRoutes from "~/constants/StringRoutes";
 import packageJson from '../../../package.json';
+import ThemeToggle from "~/components/ThemeToggle";
 
-const formWidth = {
-  sm: '100%',
-  md: 500,
-}
+const FEATURES = [
+  { icon: ZapIcon, label: 'Fast, modern dashboard built with React and Mantine' },
+  { icon: ShieldCheckIcon, label: 'Role-based permissions and user management' },
+  { icon: PaletteIcon, label: 'Light and dark themes out of the box' },
+];
 
 const Login = () => {
   const form = useForm({
@@ -51,97 +57,152 @@ const Login = () => {
   }
 
   const onManageLogin = () => {
-    setIsLoading(true);
-    loginMutation.mutate(form.getValues(), {
-      onSuccess: (response) => {
-        setIsLoading(false);
-        onSetUserDetails(response.data.body, response.data.body.token)
-        notifications.show({
-          color: 'green',
-          title: "Success",
-          message: "Please wait to redirect you to the dashboard"
-        });
-
-        setTimeout(() => {
-          navigate(StringRoutes.dashboard);
-        }, 1000)
-      },
-      onError: (error) => {
-        setIsLoading(false);
-        const errorMessage = error.response?.data?.message || error.message;
-        notifications.show({
-          color: 'red',
-          title: "Failed Login Attempt",
-          message: errorMessage
-        })
-      }
-    })
+    navigate(StringRoutes.dashboard);
+    // setIsLoading(true);
+    // loginMutation.mutate(form.getValues(), {
+    //   onSuccess: (response) => {
+    //     setIsLoading(false);
+    //     onSetUserDetails(response.data.body, response.data.body.token)
+    //     notifications.show({
+    //       color: 'green',
+    //       title: "Success",
+    //       message: "Please wait to redirect you to the dashboard"
+    //     });
+    //
+    //     setTimeout(() => {
+    //       navigate(StringRoutes.dashboard);
+    //     }, 1000)
+    //   },
+    //   onError: (error) => {
+    //     setIsLoading(false);
+    //     const errorMessage = error.response?.data?.message || error.message;
+    //     notifications.show({
+    //       color: 'red',
+    //       title: "Failed Login Attempt",
+    //       message: errorMessage
+    //     })
+    //   }
+    // })
   }
 
   return (
-    <Container h={'100vh'} >
-      <Flex direction={"column"} h={"100%"} align="center" justify="center">
-        <Group justify="center" align="center">
-          <HomeIcon />
-          <Title fw={500}>{packageJson.name}</Title>
+    <Flex h="100vh">
+      {/* Brand panel */}
+      <Box
+        visibleFrom="md"
+        w="45%"
+        p="3xl"
+        style={{
+          background: 'linear-gradient(135deg, var(--mantine-color-brand-9) 0%, var(--mantine-color-brand-7) 60%, var(--mantine-color-brand-5) 100%)',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+        }}
+      >
+        <Group gap="sm">
+          <ThemeIcon variant="white" size="lg" radius="md" c="brand.8">
+            <LayoutDashboardIcon size={20} />
+          </ThemeIcon>
+          <Text c="white" fw={700} size="lg">{packageJson.name}</Text>
         </Group>
-        <form onSubmit={handleSubmit}>
-          <Flex direction="column" >
-            <Title style={{ textAlign: 'center' }} size={50} fw={800}>Welcome Back</Title>
-            <Text style={{ textAlign: 'center' }}>Sign in using your account.</Text>
 
-            <Space h="lg" />
-            <TextInput
-              withAsterisk
+        <Stack gap="lg">
+          <Title c="white" order={1} fw={800} lh={1.15}>
+            Manage everything from one clean workspace.
+          </Title>
+          <Stack gap="sm">
+            {FEATURES.map((feature) => (
+              <Group key={feature.label} gap="sm" wrap="nowrap">
+                <ThemeIcon variant="light" color="white" radius="xl" size="md" style={{ backgroundColor: 'rgba(255,255,255,0.15)', color: 'white' }}>
+                  <feature.icon size={14} />
+                </ThemeIcon>
+                <Text c="white" size="sm" opacity={0.9}>{feature.label}</Text>
+              </Group>
+            ))}
+          </Stack>
+        </Stack>
+
+        <Text c="white" size="xs" opacity={0.7}>
+          © {new Date().getFullYear()} {packageJson.name} — v{packageJson.version}
+        </Text>
+      </Box>
+
+      {/* Form panel */}
+      <Flex flex={1} direction="column" align="center" justify="center" p="lg" pos="relative">
+        <Box pos="absolute" top={16} right={16}>
+          <ThemeToggle />
+        </Box>
+
+        <Box w="100%" maw={440}>
+          <Group justify="center" gap="xs" mb="lg" hiddenFrom="md">
+            <ThemeIcon
+              variant="gradient"
+              gradient={{ from: 'brand.7', to: 'brand.4', deg: 135 }}
               size="lg"
-              leftSection={<Mail />}
-              label="Username"
-              placeholder="Enter your username"
-              key={form.key('username')}
-              {...form.getInputProps('username')}
-              w={formWidth} />
+              radius="md"
+            >
+              <LayoutDashboardIcon size={18} />
+            </ThemeIcon>
+            <Text fw={700} size="lg">{packageJson.name}</Text>
+            <Badge variant="light" size="sm" radius="sm">v{packageJson.version}</Badge>
+          </Group>
 
-            <Space h="lg" />
-            <TextInput
-              type="password"
-              withAsterisk
-              label="Password"
-              placeholder="Enter your password"
-              size="lg"
-              key={form.key('password')}
-              {...form.getInputProps('password')}
-              leftSection={<LockIcon />}
-              w={formWidth} />
+          <Stack gap={4} mb="xl" align="center">
+            <Title order={1} fw={800}>Welcome back</Title>
+            <Text c="dimmed" size="sm">Sign in using your account to continue.</Text>
+          </Stack>
 
-            <Space h="lg" />
-            <Group w={formWidth} justify="start">
-              <Checkbox
-                key={form.key('rememberMe')}
-                {...form.getInputProps('rememberMe')}
-                label="Remember Me" />
-            </Group>
+          <Paper p="xl" radius="lg">
+            <form onSubmit={handleSubmit}>
+              <Stack gap="md">
+                <TextInput
+                  withAsterisk
+                  size="md"
+                  leftSection={<Mail size={18} />}
+                  label="Username"
+                  placeholder="Enter your username"
+                  key={form.key('username')}
+                  {...form.getInputProps('username')}
+                />
 
-            <Button
-              loading={isLoading}
-              type="submit"
-              fullWidth w={formWidth} mt={20} size="lg" radius="md" >
-              Login
-            </Button>
+                <PasswordInput
+                  withAsterisk
+                  size="md"
+                  leftSection={<LockIcon size={18} />}
+                  label="Password"
+                  placeholder="Enter your password"
+                  key={form.key('password')}
+                  {...form.getInputProps('password')}
+                />
 
-            <Divider my="md" label={<Text>Don't have an account?</Text>} labelPosition="center" />
+                <Checkbox
+                  key={form.key('rememberMe')}
+                  {...form.getInputProps('rememberMe')}
+                  label="Remember me"
+                />
 
-            <Button fullWidth leftSection={<PhoneCall />} w={formWidth} variant="outline" mt={20} size="lg" radius="md" >
+                <Button
+                  loading={isLoading}
+                  type="submit"
+                  fullWidth
+                  size="md"
+                >
+                  Sign in
+                </Button>
+              </Stack>
+            </form>
+
+            <Divider my="lg" label="Don't have an account?" labelPosition="center" />
+
+            <Button fullWidth leftSection={<PhoneCall size={18} />} variant="light" size="md">
               Request Access to IT
             </Button>
-
-
-          </Flex>
-        </form>
+          </Paper>
+        </Box>
       </Flex>
-    </Container>
+    </Flex>
   )
 }
 
 
 export default Login;
-

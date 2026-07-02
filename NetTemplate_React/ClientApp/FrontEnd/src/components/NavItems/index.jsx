@@ -4,6 +4,7 @@ import {
   Collapse,
   Box,
   Center,
+  ThemeIcon,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import './index.css';
@@ -12,26 +13,30 @@ import { ChevronRight } from 'lucide-react';
 const NavItems = ({
   leftIcon = null,
   label = "",
-  children = null
+  children = null,
+  defaultOpened = false,
 }) => {
-  const [opened, { toggle }] = useDisclosure(false);
+  const [opened, { toggle }] = useDisclosure(defaultOpened);
 
   return (
-    <Box >
-      <Group className='nav-item-container' py={5} align='center' justify='space-between' onClick={toggle}>
-        <Group align='center' justify='center'>
-          <Box className='nav-item-icon-container' p={5} >
+    <Box>
+      <Group className='nav-item-container' align='center' justify='space-between' onClick={toggle}>
+        <Group gap="sm" align='center'>
+          <ThemeIcon variant='light' size="md" radius="md">
             <Center>
               {leftIcon}
             </Center>
-          </Box>
-          <Text>
+          </ThemeIcon>
+          <Text size='sm' fw={500}>
             {label}
           </Text>
         </Group>
         {
           children && (
-            <ChevronRight size={16} />
+            <ChevronRight
+              className={`nav-item-chevron ${opened ? 'nav-item-chevron-opened' : ''}`}
+              size={14}
+            />
           )
         }
       </Group>
@@ -45,6 +50,3 @@ const NavItems = ({
 export {
   NavItems,
 }
-
-
-

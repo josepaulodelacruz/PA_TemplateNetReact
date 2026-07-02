@@ -19,7 +19,7 @@ const client = new QueryClient({
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <MantineProvider defaultColorScheme='dark' theme={theme}>
+    <MantineProvider defaultColorScheme='auto' theme={theme}>
       <Notifications />
       <QueryClientProvider client={client} >
         <App />

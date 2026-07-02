@@ -1,4 +1,19 @@
-import { Card, Container, createTheme, darken, Paper, rem, Select } from "@mantine/core";
+import {
+  ActionIcon,
+  Badge,
+  Button,
+  Card,
+  Container,
+  createTheme,
+  Modal,
+  Paper,
+  rem,
+  Select,
+  Table,
+  TextInput,
+  PasswordInput,
+  Tooltip,
+} from "@mantine/core";
 import type { MantineThemeOverride } from "@mantine/core";
 
 const CONTAINER_SIZES: Record<string, string> = {
@@ -12,7 +27,15 @@ const CONTAINER_SIZES: Record<string, string> = {
 };
 
 export const theme: MantineThemeOverride = createTheme({
-  /** Put your mantine theme override here */
+  fontFamily:
+    "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+  fontFamilyMonospace:
+    "'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace",
+  headings: {
+    fontFamily:
+      "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+    fontWeight: "600",
+  },
   fontSizes: {
     xs: rem("12px"),
     sm: rem("14px"),
@@ -35,25 +58,29 @@ export const theme: MantineThemeOverride = createTheme({
     "2xl": rem("28px"),
     "3xl": rem("32px"),
   },
+  defaultRadius: "md",
+  cursorType: "pointer",
+  autoContrast: true,
 
-  
   colors: {
-    primary: [
-      "#f3f3f3", // Lightest
-      "#B0DBDC",
-      "#8CC9CB",
-      "#69B7BA",
-      "#46A5A9",
-      "#00595C", // Base Color
-      "#004F52",
-      "#004548",
-      "#003B3E",
-      "#003335"  // Darkest
+    // Brand palette built around the original #00595C deep teal
+    brand: [
+      "#e6f7f7",
+      "#c9ebeb",
+      "#9fdcdd",
+      "#6ec9cb",
+      "#42b5b8",
+      "#1ba5a8",
+      "#0d9295",
+      "#007b7e",
+      "#00696c",
+      "#00595c",
     ],
   },
-  primaryColor: "teal",
+  primaryColor: "brand",
+  primaryShade: { light: 7, dark: 5 },
+
   components: {
-    /** Put your mantine component override here */
     Container: Container.extend({
       vars: (_, { size, fluid }) => ({
         root: {
@@ -68,23 +95,66 @@ export const theme: MantineThemeOverride = createTheme({
     Paper: Paper.extend({
       defaultProps: {
         p: "md",
-        shadow: "xl",
+        shadow: "xs",
         radius: "md",
         withBorder: true,
       },
     }),
-
     Card: Card.extend({
       defaultProps: {
         p: "xl",
-        shadow: "xl",
-        radius: "var(--mantine-radius-default)",
+        shadow: "xs",
+        radius: "lg",
         withBorder: true,
+      },
+    }),
+    Button: Button.extend({
+      defaultProps: {
+        radius: "md",
+      },
+    }),
+    ActionIcon: ActionIcon.extend({
+      defaultProps: {
+        radius: "md",
+      },
+    }),
+    Badge: Badge.extend({
+      styles: {
+        label: { fontWeight: 600 },
+      },
+    }),
+    Tooltip: Tooltip.extend({
+      defaultProps: {
+        withArrow: true,
+      },
+    }),
+    Modal: Modal.extend({
+      defaultProps: {
+        radius: "lg",
+        centered: true,
+        overlayProps: { backgroundOpacity: 0.55, blur: 3 },
+      },
+    }),
+    Table: Table.extend({
+      defaultProps: {
+        highlightOnHover: true,
+        verticalSpacing: "sm",
+      },
+    }),
+    TextInput: TextInput.extend({
+      defaultProps: {
+        radius: "md",
+      },
+    }),
+    PasswordInput: PasswordInput.extend({
+      defaultProps: {
+        radius: "md",
       },
     }),
     Select: Select.extend({
       defaultProps: {
         checkIconPosition: "right",
+        radius: "md",
       },
     }),
   },

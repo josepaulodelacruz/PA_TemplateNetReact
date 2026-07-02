@@ -1,14 +1,12 @@
 body {
-  padding: 0;
   margin: 0;
-  /* It's generally a good idea to reset margin as well */
-  font-family: 'Roboto', sans-serif;
-  background-color: #f4f4f4;
-  /* Example: Set a light background color */
-  color: #333;
-  /* Example: Set a default text color */
+  padding: 0;
+  background-color: var(--mantine-color-body);
+  color: var(--mantine-color-text);
   -webkit-font-smoothing: antialiased;
-  /* Improve font rendering on webkit browsers */
   -moz-osx-font-smoothing: grayscale;
-  /* Improve font rendering on Firefox */
+}
+
+::selection {
+  background-color: var(--mantine-primary-color-light);
 }

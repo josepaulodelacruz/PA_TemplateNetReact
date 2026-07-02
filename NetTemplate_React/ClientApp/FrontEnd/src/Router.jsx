@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 import StringRoutes from '~/constants/StringRoutes';
 import DashboardLayout from "~/layouts/DasboardLayout";
+import Dashboard from "~/pages/Dashboard";
 
 //Setup
 import Setup from "~/pages/Setup";
@@ -18,7 +19,7 @@ import CrashReportView from "./sub_pages/Reports/CrashReportView";
 
 const DASHBOARD_ROUTES = [
 
-  { index: true, element: <div>Dashboard </div> },
+  { index: true, Component: Dashboard },
   {
     path: StringRoutes.setup,
     Component: Setup,

@@ -1,31 +1,31 @@
 .nav-item-container {
-  margin: 0 1rem;
+  margin: 2px 0.75rem;
+  padding: 0.45rem 0.6rem;
   cursor: pointer;
-  transition: background-color 0.2s ease-in-out, border-radius 0.2s ease-in-out;
+  border-radius: var(--mantine-radius-md);
+  transition: background-color 0.15s ease-in-out;
+  user-select: none;
 
   &:hover {
     background-color: var(--mantine-color-default-hover);
-    border-radius: 0.2rem;
-    /* Slightly smoother */
-  }
-
-  .nav-item-icon-container {
-    background-color: var(--mantine-primary-color-filled);
-    border-radius: var(--mantine-radius-sm);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.5rem;
   }
 }
 
+.nav-item-chevron {
+  color: var(--mantine-color-dimmed);
+  transition: transform 0.2s ease-in-out;
+}
+
+.nav-item-chevron-opened {
+  transform: rotate(90deg);
+}
+
 .nav-collapsible-items-container {
-  margin: 0 1.65rem;
+  margin: 0 0.75rem 0 1.85rem;
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  padding-left: var(--mantine-spacing-md);
+  padding-left: var(--mantine-spacing-sm);
   border-left: 1px solid var(--mantine-color-default-border);
 }
 
@@ -33,19 +33,25 @@
   display: flex;
   flex-direction: column;
   text-decoration: none;
-  color: inherit;
-  padding: 0.3rem 0;
-  transition: background-color 0.2s ease-in-out, border-radius 0.2s ease-in-out;
+  color: var(--mantine-color-dimmed);
+  font-size: var(--mantine-font-size-sm);
+  padding: 0.4rem 0.6rem;
+  margin: 1px 0;
+  border-radius: var(--mantine-radius-sm);
+  transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
 
   &:hover {
     background-color: var(--mantine-color-default-hover);
-    border-radius: 0.2rem;
+    color: var(--mantine-color-text);
   }
-
 }
 
+.nav-collapsible-items-container>a.active {
+  background-color: var(--mantine-primary-color-light);
+  color: var(--mantine-primary-color-light-color);
+  font-weight: 600;
+}
 
 a.active {
-  background-color: var(--mantine-color-default-hover);
-  border-radius: 0.2rem;
+  border-radius: var(--mantine-radius-sm);
 }
