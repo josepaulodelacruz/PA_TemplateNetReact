@@ -6,6 +6,7 @@ class StringRoutes {
   static login = '/login';
 
   static dashboard = '/'; 
+  static feedback = '/feedback';
 
   static setup = '/setup';
   static users = '/setup/users';

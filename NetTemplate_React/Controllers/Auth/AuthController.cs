@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Authenticate;
+using BCrypt.Net;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NetTemplate_React.Models;
 using NetTemplate_React.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using BCrypt.Net;
-using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -43,16 +44,23 @@ namespace NetTemplate_React.Controllers.Auth
         [Route("Login")]
         public async Task<IActionResult> Login([FromBody] User user)
         {
+            //validate if the user is ldap user;
+            var loginResponse = new LDAP().ValidateLogin(user.Username, user.Password);
+
+
+            if (!loginResponse.Status) return BadRequest(loginResponse);
+
             Models.Response response = await _service.Login(user);
 
-            if(!response.Success)
-            {
-                return new BadRequestObjectResult(response);
-            }
+            //if(!response.Success)
+            //{
+            //    return new BadRequestObjectResult(response);
+            //}
 
-            await _service.GenerateSession((User)response.Body); //generate new session
+            //await _service.GenerateSession((User)response.Body); //generate new session
 
             return new OkObjectResult(response);
+
         }
 
     }

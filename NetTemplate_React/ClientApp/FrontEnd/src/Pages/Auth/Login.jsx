@@ -35,8 +35,8 @@ const Login = () => {
   const form = useForm({
     mode: 'uncontrolled',
     initialValues: {
-      username: '',
-      password: '',
+      username: 'jmdelacruz',
+      password: 'password0804,',
       rememberMe: false,
     },
     validate: {
@@ -57,32 +57,33 @@ const Login = () => {
   }
 
   const onManageLogin = () => {
-    navigate(StringRoutes.dashboard);
-    // setIsLoading(true);
-    // loginMutation.mutate(form.getValues(), {
-    //   onSuccess: (response) => {
-    //     setIsLoading(false);
-    //     onSetUserDetails(response.data.body, response.data.body.token)
-    //     notifications.show({
-    //       color: 'green',
-    //       title: "Success",
-    //       message: "Please wait to redirect you to the dashboard"
-    //     });
-    //
-    //     setTimeout(() => {
-    //       navigate(StringRoutes.dashboard);
-    //     }, 1000)
-    //   },
-    //   onError: (error) => {
-    //     setIsLoading(false);
-    //     const errorMessage = error.response?.data?.message || error.message;
-    //     notifications.show({
-    //       color: 'red',
-    //       title: "Failed Login Attempt",
-    //       message: errorMessage
-    //     })
-    //   }
-    // })
+    setIsLoading(true);
+    loginMutation.mutate(form.getValues(), {
+      onSuccess: (response) => {
+        setIsLoading(false);
+        onSetUserDetails(response.data.body, response.data.body.token)
+        notifications.show({
+          color: 'green',
+          title: "Success",
+          message: "Please wait to redirect you to the dashboard"
+        });
+
+        console.log(response.data);
+
+        setTimeout(() => {
+          navigate(StringRoutes.dashboard);
+        }, 1000)
+      },
+      onError: (error) => {
+        setIsLoading(false);
+        const errorMessage = error.response?.data?.message || error.message;
+        notifications.show({
+          color: 'red',
+          title: "Failed Login Attempt",
+          message: errorMessage
+        })
+      }
+    })
   }
 
   return (

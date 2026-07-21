@@ -16,10 +16,12 @@ import UserHistory from "./sub_pages/Setup/UserHistory";
 import Reports from "~/pages/Reports";
 import CrashReport from '~/sub_pages/Reports/CrashReport'
 import CrashReportView from "./sub_pages/Reports/CrashReportView";
+import FeedbackForms from "./Pages/FeedbackForms";
 
 const DASHBOARD_ROUTES = [
 
   { index: true, Component: Dashboard },
+  { path: StringRoutes.feedback, Component: FeedbackForms },
   {
     path: StringRoutes.setup,
     Component: Setup,

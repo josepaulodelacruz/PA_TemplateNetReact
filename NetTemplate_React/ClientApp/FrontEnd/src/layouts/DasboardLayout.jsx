@@ -122,12 +122,10 @@ const DashboardLayout = () => {
           </Text>
           <NavItems leftIcon={<LayoutDashboardIcon size={16} />} label="Dashboard" defaultOpened>
             <NavLink to={StringRoutes.dashboard} end>Dashboard</NavLink>
+            <NavLink to={StringRoutes.feedback} end>HomeBuyer Feedback Form</NavLink>
           </NavItems>
 
           <Space h="sm" />
-          <Text size="xs" fw={600} c="dimmed" tt="uppercase" lts={1} px="xl" pb="2xs">
-            Management
-          </Text>
           <NavItems leftIcon={<WrenchIcon size={16} />} label="Setup">
             <NavLink to={StringRoutes.users}>Users</NavLink>
             <NavLink to={StringRoutes.modules}>Modules</NavLink>

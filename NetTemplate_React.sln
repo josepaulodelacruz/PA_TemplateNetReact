@@ -1,9 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35728.132 d17.12
+VisualStudioVersion = 17.12.35728.132
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTemplate_React", "NetTemplate_React\NetTemplate_React.csproj", "{34C59B26-6D02-4E1E-8591-6BA41CAB1C73}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authenticate", "Authentication\Authenticate.csproj", "{592C645A-DD40-CC90-DF9E-50D4EE816725}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Structures", "Structures\Structures.csproj", "{1033D645-DF12-66E7-78FE-4958F075C47A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{34C59B26-6D02-4E1E-8591-6BA41CAB1C73}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34C59B26-6D02-4E1E-8591-6BA41CAB1C73}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34C59B26-6D02-4E1E-8591-6BA41CAB1C73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{592C645A-DD40-CC90-DF9E-50D4EE816725}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{592C645A-DD40-CC90-DF9E-50D4EE816725}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{592C645A-DD40-CC90-DF9E-50D4EE816725}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{592C645A-DD40-CC90-DF9E-50D4EE816725}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1033D645-DF12-66E7-78FE-4958F075C47A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1033D645-DF12-66E7-78FE-4958F075C47A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1033D645-DF12-66E7-78FE-4958F075C47A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1033D645-DF12-66E7-78FE-4958F075C47A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

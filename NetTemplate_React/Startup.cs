@@ -68,6 +68,9 @@ namespace NetTemplate_React
             //injected services
             services.AddScoped<IAuthService, AuthService>(options => new AuthService(conString: conString, configuration: Configuration));
 
+            //Dashboard services
+            services.AddScoped<IMetricsServices, MetricsServices>(options => new MetricsServices(conString: conString));
+
             //setups
             services.AddScoped<IModuleItemService, ModuleItemService>(options => new ModuleItemService(conString: conString, configuration: Configuration));
             services.AddScoped<IUserService, UserService>(options => new UserService(conString: conString, configuration: Configuration));
@@ -94,28 +97,28 @@ namespace NetTemplate_React
             app.UseHttpsRedirection();
             // Path to React build folder
             ///important build the front-end first before publishing the .net project
-            var clientAppDist = Path.Combine(Directory.GetCurrentDirectory(), "ClientApp/FrontEnd", "dist"); 
+            //var clientAppDist = Path.Combine(Directory.GetCurrentDirectory(), "ClientApp/FrontEnd", "dist"); 
 
-            // Serve static files (CSS, JS, images) from React build
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(clientAppDist),
-                RequestPath = ""
-            });
+            //// Serve static files (CSS, JS, images) from React build
+            //app.UseStaticFiles(new StaticFileOptions
+            //{
+            //    FileProvider = new PhysicalFileProvider(clientAppDist),
+            //    RequestPath = ""
+            //});
 
             // Serve index.html for any unmatched routes (React Router will handle frontend routing)
-            app.Use(async (context, next) =>
-            {
-                await next();
+            //app.Use(async (context, next) =>
+            //{
+            //    await next();
 
-                if (context.Response.StatusCode == 404 &&
-                    !Path.HasExtension(context.Request.Path.Value) &&
-                    !context.Request.Path.Value.StartsWith("/api"))
-                {
-                    context.Response.StatusCode = 200;
-                    await context.Response.SendFileAsync(Path.Combine(clientAppDist, "index.html"));
-                }
-            });
+            //    if (context.Response.StatusCode == 404 &&
+            //        !Path.HasExtension(context.Request.Path.Value) &&
+            //        !context.Request.Path.Value.StartsWith("/api"))
+            //    {
+            //        context.Response.StatusCode = 200;
+            //        await context.Response.SendFileAsync(Path.Combine(clientAppDist, "index.html"));
+            //    }
+            //});
 
             app.UseAuthentication();
 

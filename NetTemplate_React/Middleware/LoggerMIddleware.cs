@@ -12,6 +12,7 @@ using System.Runtime.InteropServices;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Routing;
+using Newtonsoft.Json.Linq;
 
 namespace NetTemplate_React.Middleware
 {
@@ -21,16 +22,23 @@ namespace NetTemplate_React.Middleware
         private readonly RequestDelegate _next;
         private readonly ILogger _logger;
         private readonly string _connectionString;
+        private readonly bool _isLive;
 
         public LoggerMIddleware(RequestDelegate next, ILoggerFactory loggerFactory, IConfiguration configuration)
         {
             _logger = loggerFactory.CreateLogger<LoggerMIddleware>();
-            _connectionString = configuration.GetConnectionString("DEV") ?? throw new InvalidOperationException("Connection string 'DEV' not found in configuration");
+            _isLive = bool.Parse(configuration.GetConnectionString("IsLive")) == true ? true : false;
+
+            _connectionString = !_isLive ? configuration.GetConnectionString("DEV") : configuration.GetConnectionString("PROD");
+
+            //_connectionString = configuration.GetConnectionString("DEV") ?? throw new InvalidOperationException("Connection string 'DEV' not found in configuration");
+            //_connectionString = configuration.GetConnectionString("PROD") ?? throw new InvalidOperationException("Connection string 'DEV' not found in configuration");
             _next = next;
         }
 
         public async Task Invoke(HttpContext httpContext)
         {
+            Debug.WriteLine("Attempting to log..");
 
             if(!httpContext.User.Identity.IsAuthenticated)
             {
@@ -46,7 +54,7 @@ namespace NetTemplate_React.Middleware
             }
 
             // Skip logging OPTIONS requests
-            if (httpContext.Request.Method.Equals("OPTIONS", StringComparison.OrdinalIgnoreCase))
+            if (httpContext.Request.Method.Equals("OPTIONS", StringComparison.OrdinalIgnoreCase) || httpContext.Request.Path.StartsWithSegments("/api/Projects/SubdividedTableView/export"))
             {
                 await _next(httpContext);
                 return;
@@ -92,7 +100,8 @@ namespace NetTemplate_React.Middleware
                     int? referenceId = await LogToDatabaseAsync(logEntry);
 
                     // Add reference ID to response headers
-                    var jsonObject = Newtonsoft.Json.Linq.JObject.Parse(responseBodyText);
+                    //var jsonObject = Newtonsoft.Json.Linq.JObject.Parse(responseBodyText);
+                    var jsonObject =  JObject.Parse(responseBodyText);
 
                     jsonObject["reference_id"] = referenceId;
 

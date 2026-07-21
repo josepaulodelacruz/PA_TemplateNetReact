@@ -3,10 +3,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using NetTemplate_React.Models;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -152,22 +150,7 @@ namespace NetTemplate_React.Services
         public async Task<Response> Login(Models.User user)
         {
             var dataTable = new DataTable();
-            var commandText = "SELECT " +
-                "usr.[ID], " +
-                "usr.[USERNAME], " +
-                "usr.[CREATED_AT], " +
-                "usr.[PASSWORD], " +
-                "usr.[IS_ACTIVE], " +
-                "mdl.[NAME], " +
-                "usp.[ID] as [p_id], " +
-                "usp.* " +
-                "FROM USERS usr " +
-                "LEFT JOIN UserPermissions usp " +
-                "ON usr.[ID] = usp.[USER_ID] " +
-                "LEFT JOIN ModuleItems mdl " +
-                "ON usp.[MODULE_ID] = mdl.[ID]" +
-                "WHERE usr.[USERNAME] = @username " +
-                "AND IS_ACTIVE = 1";
+            var commandText = "[dbo].[NSP_Login]";
             try
             {
                 using (SqlConnection con = new SqlConnection(_conString))
@@ -175,22 +158,13 @@ namespace NetTemplate_React.Services
                     await con.OpenAsync();
                     using (SqlCommand cmd = new SqlCommand(commandText, con))
                     {
+                        cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@username", user.Username);
                         using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
                         {
                             dataTable.Load(reader);
                         }
-                        if (dataTable.Rows.Count == 0)
-                        {
-                            throw new Exception("Invalid Username or Password");
-                        }
-                        string storedHashedPassword = dataTable.Rows[0]["PASSWORD"].ToString();
-                        // Trim the stored password to remove any whitespace that might be causing issues
-                        storedHashedPassword = storedHashedPassword.Trim();
-                        // Verify hashed password using BCrypt
-                        bool isPasswordValid = BCrypt.Net.BCrypt.Verify(user.Password, storedHashedPassword);
-                        if (!isPasswordValid) throw new Exception("Invalid Username or Password");
-                        // Generate JWT token
+
                         var token = GenerateJwtToken(dataTable.Rows[0]);
                         // Create response data with user info and token
                         var responseData = User.TransformUser(dataTable);
@@ -200,7 +174,7 @@ namespace NetTemplate_React.Services
                             success: true,
                             debugScript: commandText,
                             message: "Successfully Logged in",
-                            body: responseData 
+                            body: responseData
                         );
                     }
                 }

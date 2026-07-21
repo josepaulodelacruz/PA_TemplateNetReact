@@ -20,6 +20,12 @@ enum QueryKeys {
   REPORTS_CRASH_METRICS = 'reports_crash_metrics',
   REPORTS_CRASH_VIEW = 'reports_crash_view',
   REPORTS_CRASH_BACKEND_LOGS = 'reports_crash_backend_logs',
+
+  //HomeBuyer Feedback
+  FEEDBACK_ANSWERED_SURVEYS = 'feedback_answered_surveys',
+  FEEDBACK_QUESTIONS_PERCENTAGE = 'feedback_questions_percentage',
+  FEEDBACK_HIPLUS_ANSWERS = 'feedback_hiplus_answers',
+  FEEDBACK_LOAN_OVERALL_SATISFACTORY = 'feedback_loan_overall_satisfactory',
 }
 
 export default QueryKeys;
