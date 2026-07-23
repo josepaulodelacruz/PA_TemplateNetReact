@@ -17,11 +17,17 @@ import Reports from "~/pages/Reports";
 import CrashReport from '~/sub_pages/Reports/CrashReport'
 import CrashReportView from "./sub_pages/Reports/CrashReportView";
 import FeedbackForms from "./Pages/FeedbackForms";
+import Reservation from "./Pages/FeedbackForms/Reservation";
+import LoanProcessing from "./Pages/FeedbackForms/LoanProcessing";
+import Turnover from "./Pages/FeedbackForms/Turnover";
 
 const DASHBOARD_ROUTES = [
 
   { index: true, Component: Dashboard },
   { path: StringRoutes.feedback, Component: FeedbackForms },
+  { path: StringRoutes.feedback_reservation, Component: Reservation },
+  { path: StringRoutes.feedback_loan_processing, Component: LoanProcessing },
+  { path: StringRoutes.feedback_turnover, Component: Turnover },
   {
     path: StringRoutes.setup,
     Component: Setup,

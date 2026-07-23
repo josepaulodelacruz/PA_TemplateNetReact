@@ -24,6 +24,9 @@ import useFeedbackAnsweredSurveys from "~/hooks/HomeBuyerFeedback/useFeedbackAns
 import useFeedbackQuestionPercentage from "~/hooks/HomeBuyerFeedback/useFeedbackQuestionPercentage";
 import useFeedbackHiPlusAnswers from "~/hooks/HomeBuyerFeedback/useFeedbackHiPlusAnswers";
 import useFeedbackLoanOverallSatisfactory from "~/hooks/HomeBuyerFeedback/useFeedbackLoanOverallSatisfactory";
+import { useCallback } from "react";
+import { useNavigate } from 'react-router'
+import StringRoutes from "~/constants/StringRoutes";
 
 const TYPE_META = {
   Reservation: { label: 'Reservation', icon: CalendarCheck2, color: 'brand' },
@@ -33,13 +36,17 @@ const TYPE_META = {
 
 const TYPE_ORDER = ['Reservation', 'Loan', 'Turnover'];
 
-const FeedbackMetricCard = ({ type, total, overall }) => {
+const FeedbackMetricCard = ({ type, total, overall, onClick }) => {
   const meta = TYPE_META[type] ?? { label: type, icon: CalendarCheck2, color: 'gray' };
   const Icon = meta.icon;
   const responseRate = overall > 0 ? (total / overall) * 100 : 0;
 
+  const _onClick = useCallback(() => {
+    onClick(type);
+  }, [type])
+
   return (
-    <Card p="lg">
+    <Card p="lg" onClick={_onClick} style={{ cursor: 'pointer' }}>
       <Group justify="space-between" align="flex-start">
         <Text size="xs" c="dimmed" fw={600} tt="uppercase" lts={0.5}>
           {meta.label}
@@ -207,6 +214,9 @@ const sortByType = (list = []) =>
   );
 
 const FeedbackForms = () => {
+
+  const navigate = useNavigate();
+
   const answeredSurveys = useFeedbackAnsweredSurveys();
   const questionPercentage = useFeedbackQuestionPercentage();
   const hiPlusAnswers = useFeedbackHiPlusAnswers();
@@ -222,6 +232,23 @@ const FeedbackForms = () => {
     questionPercentage.isError ||
     hiPlusAnswers.isError ||
     loanSatisfaction.isError;
+
+  const handleNavigate = (type) => {
+    switch (type) {
+      case 'Reservation':
+        navigate(StringRoutes.feedback_reservation);
+        break;
+      case 'Loan':
+        navigate(StringRoutes.feedback_loan_processing);
+        break;
+      case 'Turnover':
+        navigate(StringRoutes.feedback_turnover);
+        break;
+      default:
+        return;
+
+    }
+  }
 
   return (
     <Stack gap="lg">
@@ -245,7 +272,7 @@ const FeedbackForms = () => {
         {answeredSurveys.isLoading
           ? TYPE_ORDER.map((type) => <Skeleton key={type} h={180} radius="md" />)
           : surveys.map((item) => (
-            <FeedbackMetricCard key={item.type} {...item} />
+            <FeedbackMetricCard key={item.type} {...item} onClick={handleNavigate} />
           ))}
       </SimpleGrid>
 

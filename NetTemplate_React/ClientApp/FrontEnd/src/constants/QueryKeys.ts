@@ -26,6 +26,12 @@ enum QueryKeys {
   FEEDBACK_QUESTIONS_PERCENTAGE = 'feedback_questions_percentage',
   FEEDBACK_HIPLUS_ANSWERS = 'feedback_hiplus_answers',
   FEEDBACK_LOAN_OVERALL_SATISFACTORY = 'feedback_loan_overall_satisfactory',
+  FEEDBACK_RESERVATION_RESPONSES = 'feedback_reservation_responses',
+  FEEDBACK_RESERVATION_QUESTIONS = 'feedback_reservation_questions',
+  FEEDBACK_LOAN_RESPONSES = 'feedback_loan_responses',
+  FEEDBACK_LOAN_QUESTIONS = 'feedback_loan_questions',
+  FEEDBACK_TURNOVER_RESPONSES = 'feedback_turnover_responses',
+  FEEDBACK_TURNOVER_QUESTIONS = 'feedback_turnover_questions',
 }
 
 export default QueryKeys;

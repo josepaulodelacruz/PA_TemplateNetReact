@@ -70,6 +70,9 @@ namespace NetTemplate_React
 
             //Dashboard services
             services.AddScoped<IMetricsServices, MetricsServices>(options => new MetricsServices(conString: conString));
+            services.AddScoped<IReservationService, ReservationService>(options => new ReservationService(conString: conString));
+            services.AddScoped<ILoanService, LoanService>(options => new LoanService(conString: conString));
+            services.AddScoped<ITurnoverService, TurnoverService>(options => new TurnoverService(conString: conString));
 
             //setups
             services.AddScoped<IModuleItemService, ModuleItemService>(options => new ModuleItemService(conString: conString, configuration: Configuration));

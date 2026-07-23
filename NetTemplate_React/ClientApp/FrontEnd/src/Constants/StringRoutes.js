@@ -7,6 +7,9 @@ class StringRoutes {
 
   static dashboard = '/'; 
   static feedback = '/feedback';
+  static feedback_reservation = '/feedback/reservation';
+  static feedback_loan_processing = '/feedback/loan-processing';
+  static feedback_turnover = '/feedback/turnover';
 
   static setup = '/setup';
   static users = '/setup/users';
