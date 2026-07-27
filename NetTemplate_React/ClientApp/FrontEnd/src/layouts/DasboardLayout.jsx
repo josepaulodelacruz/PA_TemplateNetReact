@@ -19,6 +19,8 @@ import StringRoutes from '~/constants/StringRoutes';
 import { BarChart, ChevronRight, HistoryIcon, LayoutDashboardIcon, LogOutIcon, WrenchIcon } from 'lucide-react';
 import '../index.css';
 import useAuth from '~/hooks/Auth/useAuth';
+import usePermissions from '~/hooks/Auth/usePermissions';
+import ModuleNames from '~/constants/ModuleNames';
 import { useEffect, useRef } from 'react';
 import packageJson from '../../package.json';
 import ThemeToggle from '~/components/ThemeToggle';
@@ -31,6 +33,14 @@ const DashboardLayout = () => {
   const navigationType = useNavigationType();
   const scrollPositions = useRef({});
   const location = useLocation()
+  const { canRead } = usePermissions();
+
+  const showFeedback = canRead(ModuleNames.homeBuyerFeedback);
+  const showUsers = canRead(ModuleNames.users);
+  const showModules = canRead(ModuleNames.modules);
+  const showCrashReports = canRead(ModuleNames.crashReports);
+  const showSetup = showUsers || showModules;
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -122,22 +132,32 @@ const DashboardLayout = () => {
           </Text>
           <NavItems leftIcon={<LayoutDashboardIcon size={16} />} label="Dashboard" defaultOpened>
             <NavLink to={StringRoutes.dashboard} end>Dashboard</NavLink>
-            <NavLink to={StringRoutes.feedback} end>HomeBuyer Feedback Form</NavLink>
+            {showFeedback && (
+              <NavLink to={StringRoutes.feedback} end>HomeBuyer Feedback Form</NavLink>
+            )}
           </NavItems>
 
-          <Space h="sm" />
-          <NavItems leftIcon={<WrenchIcon size={16} />} label="Setup">
-            <NavLink to={StringRoutes.users}>Users</NavLink>
-            <NavLink to={StringRoutes.modules}>Modules</NavLink>
-          </NavItems>
+          {showSetup && (
+            <>
+              <Space h="sm" />
+              <NavItems leftIcon={<WrenchIcon size={16} />} label="Setup">
+                {showUsers && <NavLink to={StringRoutes.users}>Users</NavLink>}
+                {showModules && <NavLink to={StringRoutes.modules}>Modules</NavLink>}
+              </NavItems>
+            </>
+          )}
 
-          <Space h="sm" />
-          <Text size="xs" fw={600} c="dimmed" tt="uppercase" lts={1} px="xl" pb="2xs">
-            Analytics
-          </Text>
-          <NavItems leftIcon={<BarChart size={16} />} label="Reports">
-            <NavLink to={StringRoutes.report_crash}>Crash Reports</NavLink>
-          </NavItems>
+          {showCrashReports && (
+            <>
+              <Space h="sm" />
+              <Text size="xs" fw={600} c="dimmed" tt="uppercase" lts={1} px="xl" pb="2xs">
+                Analytics
+              </Text>
+              <NavItems leftIcon={<BarChart size={16} />} label="Reports">
+                <NavLink to={StringRoutes.report_crash}>Crash Reports</NavLink>
+              </NavItems>
+            </>
+          )}
           <Space h="md" />
         </AppShell.Section>
 

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NetTemplate_React.Models;
 using NetTemplate_React.Services;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace NetTemplate_React.Controllers.HomeBuyerFeedback
@@ -44,6 +45,16 @@ namespace NetTemplate_React.Controllers.HomeBuyerFeedback
         public async Task<IActionResult> GetQuestions()
         {
             var response = await _service.GetQuestions();
+
+            if (!response.Success) return new BadRequestObjectResult(response);
+
+            return new OkObjectResult(response);
+        }
+
+        [HttpGet("threads/{id}")]
+        public async Task<IActionResult> GetThreads(int id)
+        {
+            var response = await _service.GetThreads(id);
 
             if (!response.Success) return new BadRequestObjectResult(response);
 

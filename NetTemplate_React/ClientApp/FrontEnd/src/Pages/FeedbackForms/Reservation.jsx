@@ -19,8 +19,10 @@ import {
   Alert,
   Modal,
   Textarea,
-  Switch,
   Button,
+  Drawer,
+  Timeline,
+  Divider,
 } from '@mantine/core'
 import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
@@ -32,13 +34,19 @@ import {
   CalendarCheck2,
   AlertCircleIcon,
   HelpCircleIcon,
+  CheckCircle2Icon,
+  ClockIcon,
+  DownloadIcon,
 } from 'lucide-react'
+import moment from 'moment'
 import useFeedbackReservation from '~/hooks/HomeBuyerFeedback/useFeedbackReservation';
 import useFeedbackReservationManageMutation from '~/hooks/HomeBuyerFeedback/useFeedbackReservationManageMutation';
+import usePermissions from '~/hooks/Auth/usePermissions';
+import ModuleNames from '~/constants/ModuleNames';
 import useFeedbackReservationQuestions from '~/hooks/HomeBuyerFeedback/useFeedbackReservationQuestions';
+import useFeedbackActionTakenStage from '~/hooks/HomeBuyerFeedback/useFeedbackActionTakenStage';
+import useFeedbackReservationThreads from '~/hooks/HomeBuyerFeedback/useFeedbackReservationThreads';
 import {
-  FILL_GOOD,
-  FILL_WARN,
   scoreFill,
   answerFill,
   excelCell,
@@ -46,6 +54,8 @@ import {
   excelRowNumber,
   excelTextCell,
 } from './excelStyles';
+import { stageTitle, stageFill } from './stageUtils';
+import exportToExcel, { scoreExcelFill, stageExcelFill } from './exportToExcel';
 
 const SCORE_KEYS = ['q1', 'q2', 'q3', 'q4', 'q5'];
 
@@ -58,7 +68,7 @@ const averageScore = (row) => {
     : 0;
 };
 
-const FilterSection = ({ search, onSearch, status, onStatus, rating, onRating }) => {
+const FilterSection = ({ search, onSearch, status, onStatus, rating, onRating, stageOptions }) => {
   return (
     <Group align="flex-end" gap="sm" wrap="wrap">
       <TextInput
@@ -75,7 +85,7 @@ const FilterSection = ({ search, onSearch, status, onStatus, rating, onRating })
         label="Status"
         placeholder="All"
         clearable
-        data={['Resolved', 'Pending']}
+        data={stageOptions}
         value={status}
         onChange={onStatus}
         styles={{ label: { fontSize: '0.8rem' } }}
@@ -141,26 +151,111 @@ const QuestionsModal = ({ opened, onClose }) => {
   );
 };
 
-const ManageResponseModal = ({ row, opened, onClose }) => {
+const THREAD_STATUS_META = {
+  DONE: { color: 'teal', icon: CheckCircle2Icon },
+  ONGOING: { color: 'yellow', icon: ClockIcon },
+};
+
+const ThreadTimeline = ({ responseId }) => {
+  const threads = useFeedbackReservationThreads(responseId);
+  const items = threads.data?.body ?? [];
+
+  if (threads.isLoading) {
+    return (
+      <Stack gap="sm">
+        {Array.from({ length: 3 }, (_, i) => (
+          <Skeleton key={i} h={72} radius="md" />
+        ))}
+      </Stack>
+    );
+  }
+
+  if (threads.isError) {
+    return (
+      <Alert
+        variant="light"
+        color="red"
+        icon={<AlertCircleIcon size={18} />}
+        title="Unable to load history"
+      >
+        Something went wrong while fetching the thread history.
+      </Alert>
+    );
+  }
+
+  if (items.length === 0) {
+    return (
+      <Text size="sm" c="dimmed" ta="center" py="lg">
+        No history yet — add the first update below.
+      </Text>
+    );
+  }
+
+  return (
+    <Timeline active={items.length - 1} bulletSize={22} lineWidth={2}>
+      {items.map((thread) => {
+        const meta = THREAD_STATUS_META[thread.status_description] ?? { color: 'gray', icon: ClockIcon };
+        const Icon = meta.icon;
+        return (
+          <Timeline.Item
+            key={thread.id}
+            color={meta.color}
+            bullet={<Icon size={12} />}
+            title={
+              <Group gap="xs">
+                <Badge variant="light" color={meta.color} size="sm">
+                  {thread.status_description}
+                </Badge>
+                <Text size="xs" c="dimmed">
+                  {moment(thread.created_date).format('MMM D, YYYY • h:mm A')}
+                </Text>
+              </Group>
+            }
+          >
+            <Stack gap={6} mt={4}>
+              <div>
+                <Text size="xs" c="dimmed" fw={600} tt="uppercase" lts={0.4}>Concern</Text>
+                <Text size="sm" style={{ whiteSpace: 'pre-line' }}>{thread.concern}</Text>
+              </div>
+              <div>
+                <Text size="xs" c="dimmed" fw={600} tt="uppercase" lts={0.4}>Action Taken</Text>
+                <Text size="sm" style={{ whiteSpace: 'pre-line' }}>{thread.action_taken}</Text>
+              </div>
+              <Text size="xs" c="dimmed">
+                by {thread.name || thread.created_by} • {moment(thread.created_date).fromNow()}
+              </Text>
+            </Stack>
+          </Timeline.Item>
+        );
+      })}
+    </Timeline>
+  );
+};
+
+const ManageResponseDrawer = ({ row, opened, onClose }) => {
   const manageMutation = useFeedbackReservationManageMutation();
+  const { canUpdate } = usePermissions();
+  const allowUpdate = canUpdate(ModuleNames.homeBuyerFeedback);
+  const stagesQuery = useFeedbackActionTakenStage();
+  const stages = stagesQuery.data?.body ?? [];
 
   const form = useForm({
     initialValues: {
       concern: '',
       action_taken: '',
-      status: false,
+      status: null,
+    },
+    validate: {
+      concern: (value) => (value.trim() ? null : 'Concern is required'),
+      action_taken: (value) => (value.trim() ? null : 'Action taken is required'),
+      status: (value) => (value ? null : 'Status is required'),
     },
   });
 
+  // Each save starts a new thread entry, so the form opens blank;
+  // previous entries are shown in the history timeline above.
   useEffect(() => {
-    if (row) {
-      form.setValues({
-        concern: row.concern ?? '',
-        action_taken: row.action_taken ?? '',
-        status: Boolean(row.status),
-      });
-      form.resetDirty();
-    }
+    if (row) form.reset();
   }, [row]);
 
   const handleSubmit = async (values) => {
@@ -169,7 +264,7 @@ const ManageResponseModal = ({ row, opened, onClose }) => {
         response_id: row.id,
         concern: values.concern,
         action_taken: values.action_taken,
-        status: values.status,
+        status: values.status ? Number(values.status) : null,
       },
       {
         onSuccess: (response) => {
@@ -178,7 +273,7 @@ const ManageResponseModal = ({ row, opened, onClose }) => {
             title: 'Success',
             message: response.message,
           });
-          onClose();
+          form.reset();
         },
         onError: (error) => {
           notifications.show({
@@ -196,9 +291,12 @@ const ManageResponseModal = ({ row, opened, onClose }) => {
     .join(' • ');
 
   return (
-    <Modal
+    <Drawer
       opened={opened}
       onClose={onClose}
+      position="right"
+      size={480}
+      scrollAreaComponent={ScrollArea.Autosize}
       title={
         <div>
           <Text fw={600}>Manage Response</Text>
@@ -208,43 +306,65 @@ const ManageResponseModal = ({ row, opened, onClose }) => {
         </div>
       }
     >
-      <form onSubmit={form.onSubmit(handleSubmit)}>
-        <Stack gap="md">
-          <Textarea
-            label="Concern"
-            placeholder="Enter the buyer's concern"
-            autosize
-            minRows={2}
-            maxRows={5}
-            {...form.getInputProps('concern')}
-          />
-          <Textarea
-            label="Action Taken"
-            placeholder="Describe the action taken to address the concern"
-            autosize
-            minRows={3}
-            maxRows={6}
-            {...form.getInputProps('action_taken')}
-          />
-          <Switch
-            label="Mark as resolved"
-            {...form.getInputProps('status', { type: 'checkbox' })}
-          />
-          <Group justify="flex-end" mt="xs">
-            <Button variant="subtle" color="gray" onClick={onClose}>
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              loading={manageMutation.isPending}
-              loaderProps={{ type: 'dots' }}
-            >
-              Save
-            </Button>
-          </Group>
-        </Stack>
-      </form>
-    </Modal>
+      <Stack gap="lg">
+
+
+        {allowUpdate && (
+          <>
+            <Divider label="New update" labelPosition="center" />
+
+            <form onSubmit={form.onSubmit(handleSubmit)}>
+              <Stack gap="md">
+                <Textarea
+                  label="Concern"
+                  placeholder="Enter the buyer's concern"
+                  withAsterisk
+                  autosize
+                  minRows={2}
+                  maxRows={5}
+                  {...form.getInputProps('concern')}
+                />
+                <Textarea
+                  label="Action Taken"
+                  placeholder="Describe the action taken to address the concern"
+                  withAsterisk
+                  autosize
+                  minRows={3}
+                  maxRows={6}
+                  {...form.getInputProps('action_taken')}
+                />
+                <Select
+                  label="Status"
+                  placeholder={stagesQuery.isLoading ? 'Loading statuses...' : 'Select status'}
+                  withAsterisk
+                  data={stages.map((stage) => ({
+                    value: String(stage.id),
+                    label: `${stage.title} — ${stage.description}`,
+                  }))}
+                  {...form.getInputProps('status')}
+                />
+                <Group justify="flex-end" mt="xs">
+                  <Button variant="subtle" color="gray" onClick={onClose}>
+                    Close
+                  </Button>
+                  <Button
+                    type="submit"
+                    loading={manageMutation.isPending}
+                    loaderProps={{ type: 'dots' }}
+                  >
+                    Save
+                  </Button>
+                </Group>
+              </Stack>
+            </form>
+          </>
+        )}
+        <div>
+          <Text size="sm" fw={600} mb="sm">History</Text>
+          <ThreadTimeline responseId={row?.id} />
+        </div>
+      </Stack>
+    </Drawer>
   );
 };
 
@@ -252,9 +372,9 @@ const EmptyCellHint = () => (
   <Text size="xs" c="dimmed" fs="italic">Click to add</Text>
 );
 
-const ReservationTable = ({ rows, onManage }) => {
+const ReservationTable = ({ rows, stages, onManage }) => {
   const body = rows.map((row, index) => {
-    const resolved = Boolean(row.status);
+    const statusTitle = stageTitle(row.status, stages);
     return (
       <Table.Tr key={row.id}>
         <Table.Td style={excelRowNumber}>{index + 1}</Table.Td>
@@ -295,12 +415,12 @@ const ReservationTable = ({ rows, onManage }) => {
         <Table.Td
           style={{
             ...excelCell,
-            ...(resolved ? FILL_GOOD : FILL_WARN),
+            ...stageFill(statusTitle),
             textAlign: 'center',
             fontWeight: 600,
           }}
         >
-          {resolved ? row.status : 'Pending'}
+          {statusTitle ?? 'Pending'}
         </Table.Td>
       </Table.Tr>
     );
@@ -356,6 +476,10 @@ const Reservation = () => {
   const reservation = useFeedbackReservation();
   const responses = reservation.data?.body ?? [];
 
+  const stagesQuery = useFeedbackActionTakenStage();
+  const stages = stagesQuery.data?.body ?? [];
+  const stageOptions = [...stages.map((stage) => stage.title), 'Pending'];
+
   const filteredRows = useMemo(() => {
     const query = search.trim().toLowerCase();
     return responses.filter((row) => {
@@ -367,14 +491,13 @@ const Reservation = () => {
         if (!haystack.includes(query)) return false;
       }
       if (status) {
-        const resolved = Boolean(row.status);
-        if (status === 'Resolved' && !resolved) return false;
-        if (status === 'Pending' && resolved) return false;
+        const title = stageTitle(row.status, stages) ?? 'Pending';
+        if (title !== status) return false;
       }
       if (rating > 0 && averageScore(row) < rating) return false;
       return true;
     });
-  }, [responses, search, status, rating]);
+  }, [responses, search, status, rating, stagesQuery.data]);
 
   const items = [
     { title: "HomeBuyer Feedback", href: StringRoutes.feedback },
@@ -393,7 +516,41 @@ const Reservation = () => {
   ))
 
   const totalResponses = responses.length;
-  const resolvedCount = responses.filter((row) => Boolean(row.status)).length;
+  const resolvedCount = responses.filter(
+    (row) => stageTitle(row.status, stages) === 'DONE'
+  ).length;
+
+  const handleExport = () => {
+    exportToExcel({
+      fileName: `reservation-feedback-${moment().format('YYYY-MM-DD')}.xlsx`,
+      sheetName: 'Reservation',
+      rows: filteredRows,
+      columns: [
+        { header: 'Project', key: 'project', width: 22 },
+        { header: 'Phase', key: 'phase', width: 24 },
+        { header: 'Block', key: 'block', width: 8 },
+        { header: 'Lot', key: 'lot', width: 8 },
+        { header: "Buyer's Name", key: 'buyers_name', width: 34 },
+        { header: 'Q1', key: 'q1', width: 6, style: (row) => scoreExcelFill(row.q1) },
+        { header: 'Q2', key: 'q2', width: 6, style: (row) => scoreExcelFill(row.q2) },
+        { header: 'Q3', key: 'q3', width: 6, style: (row) => scoreExcelFill(row.q3) },
+        { header: 'Q4', key: 'q4', width: 6, style: (row) => scoreExcelFill(row.q4) },
+        { header: 'Q5', key: 'q5', width: 6, style: (row) => scoreExcelFill(row.q5) },
+        { header: 'Q6', key: 'q6', width: 45 },
+        { header: 'Q7', key: 'q7', width: 16 },
+        { header: 'Q8', key: 'q8', width: 10 },
+        { header: 'Q9', key: 'q9', width: 24 },
+        { header: 'Concern', key: 'concern', width: 45 },
+        { header: 'Action Taken', key: 'action_taken', width: 45 },
+        {
+          header: 'Status',
+          value: (row) => stageTitle(row.status, stages) ?? 'Pending',
+          width: 12,
+          style: (row) => stageExcelFill(stageTitle(row.status, stages)),
+        },
+      ],
+    });
+  };
 
   return (
     <Container fluid p={0}>
@@ -425,6 +582,16 @@ const Reservation = () => {
             >
               Questions
             </Button>
+            <Button
+              variant="light"
+              color="teal"
+              size="xs"
+              leftSection={<DownloadIcon size={14} />}
+              onClick={handleExport}
+              disabled={filteredRows.length === 0}
+            >
+              Export
+            </Button>
           </Group>
         </Group>
 
@@ -447,6 +614,7 @@ const Reservation = () => {
             onStatus={setStatus}
             rating={rating}
             onRating={setRating}
+            stageOptions={stageOptions}
           />
         </Card>
 
@@ -459,13 +627,13 @@ const Reservation = () => {
             </Stack>
           ) : (
             <ScrollArea h="calc(100dvh - 290px)">
-              <ReservationTable rows={filteredRows} onManage={setSelectedRow} />
+              <ReservationTable rows={filteredRows} stages={stages} onManage={setSelectedRow} />
             </ScrollArea>
           )}
         </Card>
       </Stack>
 
-      <ManageResponseModal
+      <ManageResponseDrawer
         row={selectedRow}
         opened={selectedRow !== null}
         onClose={() => setSelectedRow(null)}

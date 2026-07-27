@@ -52,5 +52,15 @@ namespace NetTemplate_React.Controllers.HomeBuyerFeedback
 
             return new OkObjectResult(response);
         }
+
+        [HttpGet("threads/{id}")]
+        public async Task<IActionResult> GetThreads(int id)
+        {
+            var response = await _service.GetThreads(id);
+
+            if (!response.Success) return new BadRequestObjectResult(response);
+
+            return new OkObjectResult(response);
+        }
     }
 }

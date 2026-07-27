@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 560" width="920" height="560" role="img" aria-label="Step 5: after saving, a new history entry is added and the table row updates">
+  <defs>
+    <marker id="arrow4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#e8590c"/>
+    </marker>
+    <style>
+      .f { font-family: Inter, "Segoe UI", system-ui, sans-serif; }
+      .ttl { font-size: 13px; font-weight: 700; fill: #212529; }
+      .sub { font-size: 9px; fill: #868e96; }
+      .lbl { font-size: 10px; font-weight: 600; fill: #212529; }
+      .ph { font-size: 10px; fill: #adb5bd; }
+      .body { font-size: 10px; fill: #212529; }
+      .dim { font-size: 9px; fill: #868e96; }
+      .cap { font-size: 8px; font-weight: 700; fill: #868e96; letter-spacing: .5px; }
+      .note { font-size: 12px; font-weight: 600; fill: #e8590c; }
+      .noteSm { font-size: 11px; fill: #495057; }
+      .th { font-size: 9px; font-weight: 700; fill: #495057; letter-spacing: .4px; }
+      .td { font-size: 10px; fill: #212529; }
+      .score { font-size: 10px; font-weight: 700; }
+    </style>
+  </defs>
+
+  <rect width="920" height="560" fill="#f8f9fa"/>
+
+  <!-- success notification -->
+  <rect x="596" y="20" width="300" height="52" rx="8" fill="#ebfbee" stroke="#40c057"/>
+  <g class="f">
+    <circle cx="622" cy="46" r="9" fill="#40c057"/>
+    <path d="M 618 46 l 3 3 l 6 -6" stroke="#ffffff" stroke-width="2" fill="none"/>
+    <text x="640" y="42" class="lbl" fill="#2b8a3e">Success</text>
+    <text x="640" y="58" class="dim">Successfully saved the response</text>
+  </g>
+
+  <!-- drawer -->
+  <rect x="500" y="86" width="400" height="454" rx="10" fill="#ffffff" stroke="#dee2e6"/>
+  <g class="f">
+    <text x="522" y="114" class="ttl">Manage Response</text>
+    <text x="522" y="130" class="sub">Juan Dela Cruz &#8212; Camella Homes &#8226; Blk 4 &#8226; Lot 12</text>
+    <line x1="500" y1="146" x2="900" y2="146" stroke="#dee2e6"/>
+
+    <!-- form back to blank -->
+    <line x1="522" y1="168" x2="592" y2="168" stroke="#dee2e6"/>
+    <text x="660" y="172" text-anchor="middle" class="dim">New update</text>
+    <line x1="728" y1="168" x2="878" y2="168" stroke="#dee2e6"/>
+    <rect x="522" y="182" width="356" height="30" rx="4" fill="#ffffff" stroke="#ced4da"/>
+    <text x="534" y="202" class="ph">Enter the buyer's concern</text>
+    <rect x="522" y="218" width="356" height="30" rx="4" fill="#ffffff" stroke="#ced4da"/>
+    <text x="534" y="238" class="ph">Describe the action taken to address the concern</text>
+
+    <!-- history with two entries -->
+    <text x="522" y="278" class="lbl">History</text>
+    <line x1="530" y1="294" x2="530" y2="418" stroke="#dee2e6" stroke-width="2"/>
+
+    <circle cx="530" cy="300" r="7" fill="#fab005"/>
+    <rect x="548" y="292" width="62" height="16" rx="8" fill="#fff9db"/>
+    <text x="579" y="304" text-anchor="middle" class="cap" fill="#9C6500">ONGOING</text>
+    <text x="620" y="304" class="dim">Feb 10, 2026 &#8226; 9:14 AM</text>
+    <text x="548" y="324" class="cap">CONCERN</text>
+    <text x="548" y="338" class="body">Reservation papers were released late.</text>
+    <text x="548" y="354" class="cap">ACTION TAKEN</text>
+    <text x="548" y="368" class="body">Endorsed to Documentation for follow-up.</text>
+    <text x="548" y="382" class="dim">by A. Ramos &#8226; 5 days ago</text>
+
+    <circle cx="530" cy="410" r="7" fill="#12b886"/>
+    <rect x="548" y="402" width="46" height="16" rx="8" fill="#e6fcf5"/>
+    <text x="571" y="414" text-anchor="middle" class="cap" fill="#087f5b">DONE</text>
+    <text x="604" y="414" class="dim">Feb 15, 2026 &#8226; 2:31 PM</text>
+    <text x="548" y="434" class="cap">CONCERN</text>
+    <text x="548" y="448" class="body">Documents released two weeks late.</text>
+    <text x="548" y="464" class="cap">ACTION TAKEN</text>
+    <text x="548" y="478" class="body">Released Feb 12 and confirmed with buyer.</text>
+    <text x="548" y="492" class="dim">by you &#8226; a few seconds ago</text>
+  </g>
+
+  <!-- updated table row -->
+  <g class="f">
+    <text x="30" y="330" class="lbl">The table row behind the panel</text>
+    <rect x="30" y="344" width="430" height="26" fill="#f1f3f5" stroke="#dee2e6"/>
+    <text x="44" y="361" class="th">BUYER'S NAME</text>
+    <text x="160" y="361" class="th">CONCERN</text>
+    <text x="280" y="361" class="th">ACTION TAKEN</text>
+    <text x="415" y="361" text-anchor="middle" class="th">STATUS</text>
+    <rect x="30" y="370" width="430" height="30" fill="#ffffff" stroke="#dee2e6"/>
+    <text x="44" y="389" class="td">Juan Dela Cruz</text>
+    <text x="160" y="389" class="td">Documents late</text>
+    <text x="280" y="389" class="td">Released Feb 12</text>
+    <rect x="370" y="370" width="90" height="30" fill="#C6EFCE" stroke="#dee2e6"/>
+    <text x="415" y="389" text-anchor="middle" class="score" fill="#006100">DONE</text>
+  </g>
+
+  <!-- callouts -->
+  <g class="f">
+    <path d="M 560 60 L 588 46" stroke="#e8590c" stroke-width="2" fill="none" marker-end="url(#arrow4)"/>
+    <text x="30" y="50" class="note">5 &#8212; Confirm the save</text>
+    <text x="30" y="72" class="noteSm">A green Success notification appears. A red &#8220;Ooops&#8221;</text>
+    <text x="30" y="89" class="noteSm">notification means it did not go through &#8212; your text</text>
+    <text x="30" y="106" class="noteSm">stays in the form so you can fix it and retry.</text>
+
+    <path d="M 470 230 L 512 210" stroke="#e8590c" stroke-width="2" fill="none" marker-end="url(#arrow4)"/>
+    <text x="30" y="150" class="note">The form clears itself</text>
+    <text x="30" y="172" class="noteSm">This is expected. Updates are append-only &#8212; saving adds</text>
+    <text x="30" y="189" class="noteSm">a new entry to the thread instead of overwriting the last</text>
+    <text x="30" y="206" class="noteSm">one, so the form always starts blank.</text>
+
+    <path d="M 470 440 L 512 420" stroke="#e8590c" stroke-width="2" fill="none" marker-end="url(#arrow4)"/>
+    <text x="30" y="244" class="note">Your entry joins the History</text>
+    <text x="30" y="266" class="noteSm">Newest last, stamped with your name and the time.</text>
+    <text x="30" y="283" class="noteSm">Nothing in the history can be edited or deleted.</text>
+
+    <text x="30" y="428" class="noteSm">The row now shows the latest concern, action taken and</text>
+    <text x="30" y="445" class="noteSm">status. DONE turns the Status cell green and adds one to</text>
+    <text x="30" y="462" class="noteSm">the &#8220;resolved&#8221; badge in the page header.</text>
+  </g>
+</svg>

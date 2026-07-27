@@ -27,6 +27,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import QueryKeys from "~/Constants/QueryKeys";
 import useModuleItemDeleteMutation from "~/hooks/Setup/Modules/useModuleItemDeleteMutation";
 import useModuleItemEditMutation from "~/hooks/Setup/Modules/useModuleItemEditMutation";
+import usePermissions from "~/hooks/Auth/usePermissions";
+import ModuleNames from "~/constants/ModuleNames";
 
 const SelectModule = ({ form }) => {
   const { data, isLoading, isError, isSuccess } = useGetModuleItems();
@@ -67,6 +69,7 @@ const ModulesFormPage = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { data, isError, isSuccess, isLoading, error } = useGetModuleItemById();
+  const { canCreate, canUpdate, canDelete } = usePermissions();
   const addModuleMutation = useModuleItemsAddMutation();
   const editModuleMutation = useModuleItemEditMutation();
   const deleteModuleMutation = useModuleItemDeleteMutation();
@@ -212,7 +215,7 @@ const ModulesFormPage = () => {
                   <Space h={'lg'} />
                   <Group justify="flex-end" flex={1}>
                     {
-                      id !== undefined &&
+                      id !== undefined && canDelete(ModuleNames.modules) &&
                       <Group flex={1}>
                         <Button onClick={open} variant="light" color="red">
                           Delete...
@@ -224,9 +227,11 @@ const ModulesFormPage = () => {
                       <Button onClick={() => navigate(-1)} variant="outline" color="default">
                         Cancel
                       </Button>
-                      <Button type="submit">
-                        {id === undefined ? 'Add' : 'Edit'}
-                      </Button>
+                      {(id === undefined ? canCreate(ModuleNames.modules) : canUpdate(ModuleNames.modules)) && (
+                        <Button type="submit">
+                          {id === undefined ? 'Add' : 'Edit'}
+                        </Button>
+                      )}
                     </Group>
                   </Group>
                 </Card>

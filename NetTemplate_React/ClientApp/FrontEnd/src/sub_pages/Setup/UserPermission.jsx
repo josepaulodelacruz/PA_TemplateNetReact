@@ -19,6 +19,8 @@ import useGetUserPermission from "~/hooks/Setup/Permissions/useGetUserPermission
 import useSavePermissionMutation from "~/hooks/Setup/Permissions/useSavePermissionMutation";
 import { useQueryClient } from "@tanstack/react-query";
 import QueryKeys from "~/constants/QueryKeys";
+import usePermissions from "~/hooks/Auth/usePermissions";
+import ModuleNames from "~/constants/ModuleNames";
 
 const UserPermissionTable = ({ permissions, setPermissions, selected, setSelected }) => {
   const { id } = useParams();
@@ -127,6 +129,8 @@ const UserPermission = () => {
   const savePermissionMutation = useSavePermissionMutation();
   const { refetch } = useGetUserPermission(id);
   const queryClient = useQueryClient();
+  const { canUpdate } = usePermissions();
+  const allowSave = canUpdate(ModuleNames.users);
 
   const handleBulkActionChange = (action, value) => {
     setBulkActions(prev => ({
@@ -197,45 +201,47 @@ const UserPermission = () => {
         </Notification>
       )}
 
-      <Flex direction={{ base: 'column', md: 'row' }} justify="space-between" align="flex-end">
-        <Paper  shadow="sm" w={{ base: '100%', md: '50%' }} mt={10} radius="xs" p="md">
-          <Title size="lg">Actions</Title>
-          <Group justify="space-between">
-            <Group>
-              <Checkbox
-                label="Create"
-                checked={bulkActions.create}
-                onChange={(e) => handleBulkActionChange('create', e.currentTarget.checked)}
-              />
-              <Checkbox
-                label="Read"
-                checked={bulkActions.read}
-                onChange={(e) => handleBulkActionChange('read', e.currentTarget.checked)}
-              />
-              <Checkbox
-                label="Update"
-                checked={bulkActions.update}
-                onChange={(e) => handleBulkActionChange('update', e.currentTarget.checked)}
-              />
-              <Checkbox
-                label="Delete"
-                checked={bulkActions.delete}
-                onChange={(e) => handleBulkActionChange('delete', e.currentTarget.checked)}
-              />
+      {allowSave && (
+        <Flex direction={{ base: 'column', md: 'row' }} justify="space-between" align="flex-end">
+          <Paper  shadow="sm" w={{ base: '100%', md: '50%' }} mt={10} radius="xs" p="md">
+            <Title size="lg">Actions</Title>
+            <Group justify="space-between">
+              <Group>
+                <Checkbox
+                  label="Create"
+                  checked={bulkActions.create}
+                  onChange={(e) => handleBulkActionChange('create', e.currentTarget.checked)}
+                />
+                <Checkbox
+                  label="Read"
+                  checked={bulkActions.read}
+                  onChange={(e) => handleBulkActionChange('read', e.currentTarget.checked)}
+                />
+                <Checkbox
+                  label="Update"
+                  checked={bulkActions.update}
+                  onChange={(e) => handleBulkActionChange('update', e.currentTarget.checked)}
+                />
+                <Checkbox
+                  label="Delete"
+                  checked={bulkActions.delete}
+                  onChange={(e) => handleBulkActionChange('delete', e.currentTarget.checked)}
+                />
+              </Group>
+              <Button
+                variant="outline"
+                onClick={applyToSelected}
+                disabled={selected.length === 0}
+              >
+                Apply to all Selected ({selected.length})
+              </Button>
             </Group>
-            <Button
-              variant="outline"
-              onClick={applyToSelected}
-              disabled={selected.length === 0}
-            >
-              Apply to all Selected ({selected.length})
-            </Button>
-          </Group>
-        </Paper>
-        <Button onClick={handleSave}>
-          Save
-        </Button>
-      </Flex>
+          </Paper>
+          <Button onClick={handleSave}>
+            Save
+          </Button>
+        </Flex>
+      )}
       <Space h={'lg'} />
       <Card shadow="sm" p={0}>
         <UserPermissionTable

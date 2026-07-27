@@ -20,40 +20,59 @@ import FeedbackForms from "./Pages/FeedbackForms";
 import Reservation from "./Pages/FeedbackForms/Reservation";
 import LoanProcessing from "./Pages/FeedbackForms/LoanProcessing";
 import Turnover from "./Pages/FeedbackForms/Turnover";
+import UserGuidePage from "./Pages/FeedbackForms/UserGuidePage";
+import RequirePermission from "~/components/RequirePermission";
+import ModuleNames from "~/constants/ModuleNames";
 
 const DASHBOARD_ROUTES = [
 
-  { index: true, Component: Dashboard },
-  { path: StringRoutes.feedback, Component: FeedbackForms },
-  { path: StringRoutes.feedback_reservation, Component: Reservation },
-  { path: StringRoutes.feedback_loan_processing, Component: LoanProcessing },
-  { path: StringRoutes.feedback_turnover, Component: Turnover },
+  { index: true, Component: Dashboard},
+  {
+    element: <RequirePermission module={ModuleNames.homeBuyerFeedback} />,
+    children: [
+      { path: StringRoutes.feedback, Component: FeedbackForms },
+      { path: StringRoutes.feedback_reservation, Component: Reservation },
+      { path: StringRoutes.feedback_loan_processing, Component: LoanProcessing },
+      { path: StringRoutes.feedback_turnover, Component: Turnover },
+      { path: StringRoutes.feedback_user_guide, Component: UserGuidePage },
+    ]
+  },
   {
     path: StringRoutes.setup,
     Component: Setup,
     children: [
-      { path: StringRoutes.users, Component: User },
       {
-        path: `${StringRoutes.users_tab}`,
-        Component: UserTab,
+        element: <RequirePermission module={ModuleNames.users} />,
         children: [
+          { path: StringRoutes.users, Component: User },
+          {
+            path: `${StringRoutes.users_tab}`,
+            Component: UserTab,
+            children: [
 
-          {
-            path: `${StringRoutes.users_permission}/:id?`,
-            Component: UserPermission,
+              {
+                path: `${StringRoutes.users_permission}/:id?`,
+                Component: UserPermission,
+              },
+              {
+                path: `${StringRoutes.users_history}/:id?`,
+                Component: UserHistory,
+              }
+            ]
           },
-          {
-            path: `${StringRoutes.users_history}/:id?`,
-            Component: UserHistory,
-          }
         ]
       },
       {
-        path: StringRoutes.modules,
-        Component: Modules,
+        element: <RequirePermission module={ModuleNames.modules} />,
         children: [
-          { index: true, Component: ModulesInitialPage },
-          { path: `${StringRoutes.modules_form}/:id?`, Component: ModulesFormPage },
+          {
+            path: StringRoutes.modules,
+            Component: Modules,
+            children: [
+              { index: true, Component: ModulesInitialPage },
+              { path: `${StringRoutes.modules_form}/:id?`, Component: ModulesFormPage },
+            ]
+          }
         ]
       }
     ]
@@ -62,10 +81,15 @@ const DASHBOARD_ROUTES = [
     path: StringRoutes.report,
     Component: Reports,
     children: [
-      { path: StringRoutes.report_crash, Component: CrashReport },
       {
-        path: `${StringRoutes.report_crash}/:id?`,
-        Component: CrashReportView,
+        element: <RequirePermission module={ModuleNames.crashReports} />,
+        children: [
+          { path: StringRoutes.report_crash, Component: CrashReport },
+          {
+            path: `${StringRoutes.report_crash}/:id?`,
+            Component: CrashReportView,
+          }
+        ]
       }
     ]
   }
@@ -86,6 +110,7 @@ const router = createBrowserRouter([
     future: {
       v7_startTransition: true,
     },
+    basename: '/ECastV2'
   },
   
 )

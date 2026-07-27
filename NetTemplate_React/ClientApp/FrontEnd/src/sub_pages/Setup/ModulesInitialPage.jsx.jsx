@@ -13,6 +13,8 @@ import { NavLink } from "react-router";
 import StringRoutes from "~/constants/StringRoutes";
 import ModuleItemsTable from "./components/ModuleItemsTable";
 import useModuleItems from "~/hooks/Setup/Modules/useModuleItems";
+import usePermissions from "~/hooks/Auth/usePermissions";
+import ModuleNames from "~/constants/ModuleNames";
 
 const ModuleMultiSelect = () => {
   const { modules } = useModuleItems();
@@ -33,6 +35,8 @@ const ModuleMultiSelect = () => {
 }
 
 const ModulesInitialPage = () => {
+  const { canCreate } = usePermissions();
+
   return (
     <>
       <Title component={'span'} style={{ viewTransitionName: 'mdl-header' }} size={50} fw={700}>Modules</Title>
@@ -41,9 +45,11 @@ const ModulesInitialPage = () => {
         <ModuleMultiSelect />
         <Box mt={{ base: 20, md: 0 }}>
           <Group justify="flex-end">
-            <Button component={NavLink} to={StringRoutes.modules_form} viewTransition >
-              Add Module
-            </Button>
+            {canCreate(ModuleNames.modules) && (
+              <Button component={NavLink} to={StringRoutes.modules_form} viewTransition >
+                Add Module
+              </Button>
+            )}
           </Group>
         </Box>
       </Flex>

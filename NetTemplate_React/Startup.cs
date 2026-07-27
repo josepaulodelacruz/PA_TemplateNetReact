@@ -82,6 +82,9 @@ namespace NetTemplate_React
 
             //reports
             services.AddScoped<ICrashReportService, CrashReportService>(options => new CrashReportService(conString: conString, logger: new LoggerFactory()));
+
+            //misc
+            services.AddScoped<IMiscService, MiscService>(options => new MiscService(conString: conString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

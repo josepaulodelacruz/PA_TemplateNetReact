@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 400" width="920" height="400" role="img" aria-label="Step 1: click the Concern or Action Taken cell of the response you want to update">
+  <defs>
+    <marker id="arrow1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#e8590c"/>
+    </marker>
+    <style>
+      .f { font-family: Inter, "Segoe UI", system-ui, sans-serif; }
+      .h1 { font-size: 17px; font-weight: 700; fill: #212529; }
+      .crumb { font-size: 10px; fill: #868e96; }
+      .th { font-size: 9px; font-weight: 700; fill: #495057; letter-spacing: .4px; }
+      .td { font-size: 10px; fill: #212529; }
+      .hint { font-size: 9px; font-style: italic; fill: #adb5bd; }
+      .pill { font-size: 9px; font-weight: 600; }
+      .note { font-size: 12px; font-weight: 600; fill: #e8590c; }
+      .noteSm { font-size: 11px; fill: #495057; }
+      .score { font-size: 10px; font-weight: 700; }
+    </style>
+  </defs>
+
+  <rect width="920" height="400" fill="#f8f9fa"/>
+
+  <!-- header -->
+  <g class="f">
+    <rect x="25" y="24" width="24" height="24" rx="6" fill="#e7f5ff"/>
+    <text x="37" y="41" text-anchor="middle" font-size="12" fill="#1971c2">R</text>
+    <text x="58" y="42" class="h1">Reservation</text>
+    <text x="25" y="62" class="crumb">HomeBuyer Feedback  &#8250;  Reservation</text>
+
+    <rect x="545" y="28" width="105" height="22" rx="11" fill="#e7f5ff"/>
+    <text x="597" y="43" text-anchor="middle" class="pill" fill="#1971c2">128 responses</text>
+    <rect x="658" y="28" width="88" height="22" rx="11" fill="#e6fcf5"/>
+    <text x="702" y="43" text-anchor="middle" class="pill" fill="#087f5b">43 resolved</text>
+    <rect x="754" y="28" width="70" height="22" rx="6" fill="#e7f5ff"/>
+    <text x="789" y="43" text-anchor="middle" class="pill" fill="#1971c2">Questions</text>
+    <rect x="832" y="28" width="63" height="22" rx="6" fill="#e6fcf5"/>
+    <text x="863" y="43" text-anchor="middle" class="pill" fill="#087f5b">Export</text>
+  </g>
+
+  <!-- table -->
+  <g class="f">
+    <rect x="25" y="80" width="830" height="30" fill="#f1f3f5" stroke="#dee2e6"/>
+    <text x="40" y="99" text-anchor="middle" class="th"></text>
+    <text x="65" y="99" class="th">BUYER'S NAME</text>
+    <text x="243" y="99" text-anchor="middle" class="th">Q1</text>
+    <text x="279" y="99" text-anchor="middle" class="th">Q2</text>
+    <text x="315" y="99" text-anchor="middle" class="th">Q3</text>
+    <text x="351" y="99" text-anchor="middle" class="th">Q4</text>
+    <text x="387" y="99" text-anchor="middle" class="th">Q5</text>
+    <text x="415" y="99" class="th">CONCERN</text>
+    <text x="595" y="99" class="th">ACTION TAKEN</text>
+    <text x="810" y="99" text-anchor="middle" class="th">STATUS</text>
+
+    <!-- row 1 -->
+    <rect x="25" y="110" width="830" height="34" fill="#ffffff" stroke="#dee2e6"/>
+    <rect x="25" y="110" width="30" height="34" fill="#f1f3f5" stroke="#dee2e6"/>
+    <text x="40" y="131" text-anchor="middle" class="td" fill="#868e96">1</text>
+    <text x="65" y="131" class="td">Maria Santos</text>
+    <rect x="225" y="110" width="36" height="34" fill="#C6EFCE" stroke="#dee2e6"/><text x="243" y="131" text-anchor="middle" class="score" fill="#006100">5</text>
+    <rect x="261" y="110" width="36" height="34" fill="#C6EFCE" stroke="#dee2e6"/><text x="279" y="131" text-anchor="middle" class="score" fill="#006100">5</text>
+    <rect x="297" y="110" width="36" height="34" fill="#C6EFCE" stroke="#dee2e6"/><text x="315" y="131" text-anchor="middle" class="score" fill="#006100">4</text>
+    <rect x="333" y="110" width="36" height="34" fill="#C6EFCE" stroke="#dee2e6"/><text x="351" y="131" text-anchor="middle" class="score" fill="#006100">5</text>
+    <rect x="369" y="110" width="36" height="34" fill="#C6EFCE" stroke="#dee2e6"/><text x="387" y="131" text-anchor="middle" class="score" fill="#006100">4</text>
+    <text x="413" y="131" class="td">Late release of documents</text>
+    <text x="593" y="131" class="td">Endorsed to Documentation</text>
+    <rect x="765" y="110" width="90" height="34" fill="#FFEB9C" stroke="#dee2e6"/>
+    <text x="810" y="131" text-anchor="middle" class="score" fill="#9C6500">ONGOING</text>
+
+    <!-- row 2 (target) -->
+    <rect x="25" y="144" width="830" height="34" fill="#f8f9fa" stroke="#dee2e6"/>
+    <rect x="25" y="144" width="30" height="34" fill="#f1f3f5" stroke="#dee2e6"/>
+    <text x="40" y="165" text-anchor="middle" class="td" fill="#868e96">2</text>
+    <text x="65" y="165" class="td">Juan Dela Cruz</text>
+    <rect x="225" y="144" width="36" height="34" fill="#FFEB9C" stroke="#dee2e6"/><text x="243" y="165" text-anchor="middle" class="score" fill="#9C6500">3</text>
+    <rect x="261" y="144" width="36" height="34" fill="#FFC7CE" stroke="#dee2e6"/><text x="279" y="165" text-anchor="middle" class="score" fill="#9C0006">2</text>
+    <rect x="297" y="144" width="36" height="34" fill="#C6EFCE" stroke="#dee2e6"/><text x="315" y="165" text-anchor="middle" class="score" fill="#006100">4</text>
+    <rect x="333" y="144" width="36" height="34" fill="#FFEB9C" stroke="#dee2e6"/><text x="351" y="165" text-anchor="middle" class="score" fill="#9C6500">3</text>
+    <rect x="369" y="144" width="36" height="34" fill="#C6EFCE" stroke="#dee2e6"/><text x="387" y="165" text-anchor="middle" class="score" fill="#006100">5</text>
+    <text x="413" y="165" class="hint">Click to add</text>
+    <text x="593" y="165" class="hint">Click to add</text>
+    <rect x="765" y="144" width="90" height="34" fill="#FFEB9C" stroke="#dee2e6"/>
+    <text x="810" y="165" text-anchor="middle" class="score" fill="#9C6500">Pending</text>
+
+    <!-- row 3 -->
+    <rect x="25" y="178" width="830" height="34" fill="#ffffff" stroke="#dee2e6"/>
+    <rect x="25" y="178" width="30" height="34" fill="#f1f3f5" stroke="#dee2e6"/>
+    <text x="40" y="199" text-anchor="middle" class="td" fill="#868e96">3</text>
+    <text x="65" y="199" class="td">Ana Reyes</text>
+    <rect x="225" y="178" width="36" height="34" fill="#C6EFCE" stroke="#dee2e6"/><text x="243" y="199" text-anchor="middle" class="score" fill="#006100">5</text>
+    <rect x="261" y="178" width="36" height="34" fill="#C6EFCE" stroke="#dee2e6"/><text x="279" y="199" text-anchor="middle" class="score" fill="#006100">5</text>
+    <rect x="297" y="178" width="36" height="34" fill="#C6EFCE" stroke="#dee2e6"/><text x="315" y="199" text-anchor="middle" class="score" fill="#006100">5</text>
+    <rect x="333" y="178" width="36" height="34" fill="#C6EFCE" stroke="#dee2e6"/><text x="351" y="199" text-anchor="middle" class="score" fill="#006100">5</text>
+    <rect x="369" y="178" width="36" height="34" fill="#C6EFCE" stroke="#dee2e6"/><text x="387" y="199" text-anchor="middle" class="score" fill="#006100">5</text>
+    <text x="413" y="199" class="td">Parking slot inquiry</text>
+    <text x="593" y="199" class="td">Slot assigned and confirmed</text>
+    <rect x="765" y="178" width="90" height="34" fill="#C6EFCE" stroke="#dee2e6"/>
+    <text x="810" y="199" text-anchor="middle" class="score" fill="#006100">DONE</text>
+
+    <!-- row 4 -->
+    <rect x="25" y="212" width="830" height="34" fill="#f8f9fa" stroke="#dee2e6"/>
+    <rect x="25" y="212" width="30" height="34" fill="#f1f3f5" stroke="#dee2e6"/>
+    <text x="40" y="233" text-anchor="middle" class="td" fill="#868e96">4</text>
+    <text x="65" y="233" class="td">Pedro Cruz</text>
+    <rect x="225" y="212" width="36" height="34" fill="#C6EFCE" stroke="#dee2e6"/><text x="243" y="233" text-anchor="middle" class="score" fill="#006100">4</text>
+    <rect x="261" y="212" width="36" height="34" fill="#FFEB9C" stroke="#dee2e6"/><text x="279" y="233" text-anchor="middle" class="score" fill="#9C6500">3</text>
+    <rect x="297" y="212" width="36" height="34" fill="#C6EFCE" stroke="#dee2e6"/><text x="315" y="233" text-anchor="middle" class="score" fill="#006100">4</text>
+    <rect x="333" y="212" width="36" height="34" fill="#C6EFCE" stroke="#dee2e6"/><text x="351" y="233" text-anchor="middle" class="score" fill="#006100">4</text>
+    <rect x="369" y="212" width="36" height="34" fill="#FFEB9C" stroke="#dee2e6"/><text x="387" y="233" text-anchor="middle" class="score" fill="#9C6500">3</text>
+    <text x="413" y="233" class="hint">Click to add</text>
+    <text x="593" y="233" class="hint">Click to add</text>
+    <rect x="765" y="212" width="90" height="34" fill="#FFEB9C" stroke="#dee2e6"/>
+    <text x="810" y="233" text-anchor="middle" class="score" fill="#9C6500">Pending</text>
+  </g>
+
+  <!-- callout -->
+  <g class="f">
+    <rect x="405" y="144" width="360" height="34" fill="none" stroke="#e8590c" stroke-width="2" stroke-dasharray="5 3"/>
+    <path d="M 585 300 L 585 184" stroke="#e8590c" stroke-width="2" fill="none" marker-end="url(#arrow1)"/>
+    <text x="405" y="325" class="note">1 &#8212; Click the Concern or Action Taken cell</text>
+    <text x="405" y="345" class="noteSm">Either cell opens the same panel. Cells that are still empty</text>
+    <text x="405" y="362" class="noteSm">show a faint &#8220;Click to add&#8221; hint.</text>
+  </g>
+</svg>

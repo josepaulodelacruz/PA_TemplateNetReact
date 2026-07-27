@@ -26,7 +26,7 @@ import packageJson from '../../../package.json';
 import ThemeToggle from "~/components/ThemeToggle";
 
 const FEATURES = [
-  { icon: ZapIcon, label: 'Fast, modern dashboard built with React and Mantine' },
+  { icon: ZapIcon, label: 'Fast, modern dashboard metrics' },
   { icon: ShieldCheckIcon, label: 'Role-based permissions and user management' },
   { icon: PaletteIcon, label: 'Light and dark themes out of the box' },
 ];
@@ -35,8 +35,8 @@ const Login = () => {
   const form = useForm({
     mode: 'uncontrolled',
     initialValues: {
-      username: 'jmdelacruz',
-      password: 'password0804,',
+      username: '',
+      password: '',
       rememberMe: false,
     },
     validate: {

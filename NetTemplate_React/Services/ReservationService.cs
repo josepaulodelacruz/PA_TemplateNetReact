@@ -12,7 +12,9 @@ namespace NetTemplate_React.Services
         Task<Response> GetQuestions();
         Task<Response> GetResponses();
 
-        Task<Response> AddResponse(FeedbackFormRequest req); 
+        Task<Response> AddResponse(FeedbackFormRequest req);
+
+        Task<Response> GetThreads(int ResponseId);
 
     }
     public class ReservationService : IReservationService
@@ -182,5 +184,59 @@ namespace NetTemplate_React.Services
             }
         }
 
+        public async Task<Response> GetThreads(int responseId)
+        {
+            try
+            {
+                var dataTable = new DataTable();
+                StringBuilder CommandText = new StringBuilder();
+                CommandText.Append("[HFF].[NSP_ManageReservation]");
+
+                using (SqlConnection con = new SqlConnection(_conString))
+                {
+                    await con.OpenAsync();
+
+                    using (SqlCommand cmd = new SqlCommand(CommandText.ToString(), con))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@FLAG", 3);
+                        cmd.Parameters.AddWithValue("@RESPONSE_ID", responseId);
+
+                        CommandText.Append("@FLAG=3, @RESPONSE_ID=" + responseId);
+
+                        using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
+                        {
+                            dataTable.Load(reader);
+                        }
+
+                        foreach (DataColumn col in dataTable.Columns)
+                        {
+                            col.ColumnName = col.ColumnName.ToLower();
+                        }
+
+
+                        return new Response(
+                            success: true,
+                            debugScript: CommandText.ToString(),
+                            message: "Successfully fetch threads",
+                            body: dataTable
+                        );
+
+                    }
+                }
+ 
+            } 
+            catch (Exception Ex)
+            {
+                return new Response(
+                    success: false,
+                    debugScript: Ex.StackTrace,
+                    message: Ex.Message,
+                    body: null
+                ); 
+            }
+        }
     }
 }

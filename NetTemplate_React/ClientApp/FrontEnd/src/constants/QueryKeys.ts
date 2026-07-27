@@ -32,6 +32,10 @@ enum QueryKeys {
   FEEDBACK_LOAN_QUESTIONS = 'feedback_loan_questions',
   FEEDBACK_TURNOVER_RESPONSES = 'feedback_turnover_responses',
   FEEDBACK_TURNOVER_QUESTIONS = 'feedback_turnover_questions',
+  FEEDBACK_ACTION_TAKEN_STAGES = 'feedback_action_taken_stages',
+  FEEDBACK_RESERVATION_THREADS = 'feedback_reservation_threads',
+  FEEDBACK_LOAN_THREADS = 'feedback_loan_threads',
+  FEEDBACK_TURNOVER_THREADS = 'feedback_turnover_threads',
 }
 
 export default QueryKeys;

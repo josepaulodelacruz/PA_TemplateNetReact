@@ -23,7 +23,7 @@ namespace NetTemplate_React.Models
 
         [JsonProperty("status")]
         [Required]
-        public bool Status { get; set; }
+        public int Status { get; set; }
 
         [JsonProperty("created_by")]
         public string CreatedBy { get; set; }

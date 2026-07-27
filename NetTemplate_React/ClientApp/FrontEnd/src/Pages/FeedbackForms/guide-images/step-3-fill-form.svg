@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 520" width="920" height="520" role="img" aria-label="Step 3: fill in Concern, Action Taken and Status">
+  <defs>
+    <marker id="arrow3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#e8590c"/>
+    </marker>
+    <style>
+      .f { font-family: Inter, "Segoe UI", system-ui, sans-serif; }
+      .ttl { font-size: 13px; font-weight: 700; fill: #212529; }
+      .sub { font-size: 9px; fill: #868e96; }
+      .lbl { font-size: 10px; font-weight: 600; fill: #212529; }
+      .body { font-size: 10px; fill: #212529; }
+      .dim { font-size: 9px; fill: #868e96; }
+      .note { font-size: 12px; font-weight: 600; fill: #e8590c; }
+      .noteSm { font-size: 11px; fill: #495057; }
+      .btn { font-size: 10px; font-weight: 600; }
+      .step { font-size: 11px; font-weight: 700; fill: #ffffff; }
+    </style>
+  </defs>
+
+  <rect width="920" height="520" fill="#f8f9fa"/>
+
+  <!-- panel -->
+  <rect x="300" y="20" width="400" height="480" rx="10" fill="#ffffff" stroke="#dee2e6"/>
+  <g class="f">
+    <text x="322" y="48" class="ttl">Manage Response</text>
+    <text x="322" y="64" class="sub">Juan Dela Cruz &#8212; Camella Homes &#8226; Blk 4 &#8226; Lot 12</text>
+    <line x1="300" y1="80" x2="700" y2="80" stroke="#dee2e6"/>
+
+    <line x1="322" y1="104" x2="392" y2="104" stroke="#dee2e6"/>
+    <text x="460" y="108" text-anchor="middle" class="dim">New update</text>
+    <line x1="528" y1="104" x2="678" y2="104" stroke="#dee2e6"/>
+
+    <!-- concern filled -->
+    <text x="322" y="134" class="lbl">Concern <tspan fill="#e03131">*</tspan></text>
+    <rect x="322" y="142" width="356" height="52" rx="4" fill="#ffffff" stroke="#228be6"/>
+    <text x="334" y="161" class="body">Buyer reported that the reservation documents</text>
+    <text x="334" y="177" class="body">were released two weeks late.</text>
+
+    <!-- action taken filled -->
+    <text x="322" y="218" class="lbl">Action Taken <tspan fill="#e03131">*</tspan></text>
+    <rect x="322" y="226" width="356" height="68" rx="4" fill="#ffffff" stroke="#228be6"/>
+    <text x="334" y="245" class="body">Coordinated with Documentation. Papers were</text>
+    <text x="334" y="261" class="body">released Feb 12 and personally confirmed</text>
+    <text x="334" y="277" class="body">received by the buyer the same day.</text>
+
+    <!-- status select, open -->
+    <text x="322" y="318" class="lbl">Status <tspan fill="#e03131">*</tspan></text>
+    <rect x="322" y="326" width="356" height="30" rx="4" fill="#ffffff" stroke="#228be6"/>
+    <text x="334" y="346" class="body">DONE &#8212; Concern has been resolved</text>
+    <path d="M 656 345 l 6 -7 l 6 7" stroke="#868e96" stroke-width="1.5" fill="none"/>
+
+    <rect x="322" y="360" width="356" height="62" rx="6" fill="#ffffff" stroke="#dee2e6"/>
+    <rect x="326" y="364" width="348" height="27" rx="4" fill="#f8f9fa"/>
+    <text x="338" y="382" class="body">ONGOING &#8212; Concern is being worked on</text>
+    <rect x="326" y="391" width="348" height="27" rx="4" fill="#e7f5ff"/>
+    <text x="338" y="409" class="body" fill="#1971c2">DONE &#8212; Concern has been resolved</text>
+
+    <!-- buttons -->
+    <text x="570" y="454" text-anchor="middle" class="btn" fill="#868e96">Close</text>
+    <rect x="600" y="438" width="78" height="26" rx="5" fill="#228be6"/>
+    <text x="639" y="455" text-anchor="middle" class="btn" fill="#ffffff">Save</text>
+  </g>
+
+  <!-- step bullets -->
+  <g class="f">
+    <circle cx="288" cy="166" r="11" fill="#e8590c"/><text x="288" y="170" text-anchor="middle" class="step">3a</text>
+    <circle cx="288" cy="258" r="11" fill="#e8590c"/><text x="288" y="262" text-anchor="middle" class="step">3b</text>
+    <circle cx="288" cy="341" r="11" fill="#e8590c"/><text x="288" y="345" text-anchor="middle" class="step">3c</text>
+    <circle cx="712" cy="451" r="11" fill="#e8590c"/><text x="712" y="455" text-anchor="middle" class="step">4</text>
+  </g>
+
+  <!-- callouts left -->
+  <g class="f">
+    <text x="30" y="120" class="note">3 &#8212; Fill in all three fields</text>
+    <text x="30" y="142" class="noteSm">Every field is required. Leaving one blank shows a</text>
+    <text x="30" y="159" class="noteSm">red validation message instead of saving.</text>
+
+    <text x="30" y="196" class="note">3a Concern</text>
+    <text x="30" y="216" class="noteSm">What the buyer raised, in their terms.</text>
+
+    <text x="30" y="252" class="note">3b Action Taken</text>
+    <text x="30" y="272" class="noteSm">What your team actually did about it.</text>
+
+    <text x="30" y="308" class="note">3c Status</text>
+    <text x="30" y="328" class="noteSm">Each option shows its title and description.</text>
+    <text x="30" y="345" class="noteSm">Pick DONE only when the concern is closed &#8212;</text>
+    <text x="30" y="362" class="noteSm">it is what the &#8220;resolved&#8221; badge counts.</text>
+  </g>
+
+  <!-- callout right -->
+  <g class="f">
+    <path d="M 800 430 L 730 448" stroke="#e8590c" stroke-width="2" fill="none" marker-end="url(#arrow3)"/>
+    <text x="740" y="330" class="note">4 &#8212; Click Save</text>
+    <text x="740" y="352" class="noteSm">Closing the panel</text>
+    <text x="740" y="369" class="noteSm">without saving discards</text>
+    <text x="740" y="386" class="noteSm">everything you typed.</text>
+  </g>
+</svg>

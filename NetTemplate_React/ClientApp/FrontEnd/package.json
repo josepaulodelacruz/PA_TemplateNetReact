@@ -1,11 +1,11 @@
 {
   "name": "ECastV2",
   "private": true,
-  "version": "0.3.3",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build --base=/ECastV2",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -27,6 +27,7 @@
     "react-zoom-pan-pinch": "^3.7.0",
     "recharts": "^2.15.3",
     "vite-jsconfig-paths": "^2.0.1",
+    "xlsx-js-style": "^1.2.0",
     "zustand": "^5.0.4"
   },
   "overrides": {
@@ -36,6 +37,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
+    "@mdx-js/rollup": "^3.1.1",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react-swc": "^3.8.0",
@@ -43,6 +45,8 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^16.0.0",
+    "remark-frontmatter": "^5.0.0",
+    "remark-gfm": "^4.0.1",
     "vite": "^6.3.1"
   }
 }

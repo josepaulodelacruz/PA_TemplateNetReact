@@ -15,6 +15,8 @@ namespace NetTemplate_React.Services
 
         Task<Response> GetQuestions();
 
+        Task<Response> GetThreads(int responseId);
+
     }
 
     public class TurnoverService : ITurnoverService
@@ -170,6 +172,61 @@ namespace NetTemplate_React.Services
                             debugScript: CommandText.ToString(),
                             message: "Successfully added a response",
                             body: null
+                        );
+
+                    }
+                }
+
+            }
+            catch (Exception Ex)
+            {
+                return new Response(
+                    success: false,
+                    debugScript: Ex.StackTrace,
+                    message: Ex.Message,
+                    body: null
+                );
+            }
+        }
+
+        public async Task<Response> GetThreads(int responseId)
+        {
+            try
+            {
+                var dataTable = new DataTable();
+                StringBuilder CommandText = new StringBuilder();
+                CommandText.Append("[HFF].[NSP_ManageTurnover]");
+
+                using (SqlConnection con = new SqlConnection(_conString))
+                {
+                    await con.OpenAsync();
+
+                    using (SqlCommand cmd = new SqlCommand(CommandText.ToString(), con))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@FLAG", 3);
+                        cmd.Parameters.AddWithValue("@RESPONSE_ID", responseId);
+
+                        CommandText.Append("@FLAG=3, @RESPONSE_ID=" + responseId);
+
+                        using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
+                        {
+                            dataTable.Load(reader);
+                        }
+
+                        foreach (DataColumn col in dataTable.Columns)
+                        {
+                            col.ColumnName = col.ColumnName.ToLower();
+                        }
+
+
+                        return new Response(
+                            success: true,
+                            debugScript: CommandText.ToString(),
+                            message: "Successfully fetch responses",
+                            body: dataTable
                         );
 
                     }

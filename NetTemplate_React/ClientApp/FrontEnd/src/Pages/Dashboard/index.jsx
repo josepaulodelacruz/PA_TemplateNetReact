@@ -113,6 +113,8 @@ const StatCard = ({ label, value, diff, icon, color }) => {
 };
 
 const Dashboard = () => {
+  if(true) return null
+
   return (
     <Stack gap="lg">
       <Group justify="space-between" align="flex-end">

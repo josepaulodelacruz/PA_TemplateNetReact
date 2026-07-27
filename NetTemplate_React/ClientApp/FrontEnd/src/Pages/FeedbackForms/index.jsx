@@ -12,6 +12,7 @@ import {
   Skeleton,
   Alert,
   Tooltip,
+  Button,
 } from "@mantine/core";
 import { BarChart, DonutChart } from '@mantine/charts';
 import {
@@ -19,13 +20,14 @@ import {
   LandmarkIcon,
   KeyRoundIcon,
   AlertCircleIcon,
+  MessageCircleQuestion
 } from 'lucide-react';
 import useFeedbackAnsweredSurveys from "~/hooks/HomeBuyerFeedback/useFeedbackAnsweredSurveys";
 import useFeedbackQuestionPercentage from "~/hooks/HomeBuyerFeedback/useFeedbackQuestionPercentage";
 import useFeedbackHiPlusAnswers from "~/hooks/HomeBuyerFeedback/useFeedbackHiPlusAnswers";
 import useFeedbackLoanOverallSatisfactory from "~/hooks/HomeBuyerFeedback/useFeedbackLoanOverallSatisfactory";
 import { useCallback } from "react";
-import { useNavigate } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import StringRoutes from "~/constants/StringRoutes";
 
 const TYPE_META = {
@@ -46,7 +48,7 @@ const FeedbackMetricCard = ({ type, total, overall, onClick }) => {
   }, [type])
 
   return (
-    <Card p="lg" onClick={_onClick} style={{ cursor: 'pointer' }}>
+    <Card p="lg" onClick={_onClick} component={Link} to={null} >
       <Group justify="space-between" align="flex-start">
         <Text size="xs" c="dimmed" fw={600} tt="uppercase" lts={0.5}>
           {meta.label}
@@ -252,10 +254,21 @@ const FeedbackForms = () => {
 
   return (
     <Stack gap="lg">
-      <div>
-        <Title order={2}>HomeBuyer Feedback</Title>
-        <Text c="dimmed" size="sm">Here are the satisfactory metrics for today</Text>
-      </div>
+      <Group justify="space-between">
+        <div>
+          <Title order={2}>HomeBuyer Feedback</Title>
+          <Text c="dimmed" size="sm">Here are the satisfactory metrics for today</Text>
+        </div>
+        <Button
+          component={Link}
+          to={StringRoutes.feedback_user_guide}
+          leftSection={<MessageCircleQuestion />}
+          variant="light"
+          radius="lg"
+        >
+          User guide
+        </Button>
+      </Group>
 
       {hasError && (
         <Alert
