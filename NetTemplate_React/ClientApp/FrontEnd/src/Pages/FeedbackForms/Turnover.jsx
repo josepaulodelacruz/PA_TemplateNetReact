@@ -58,14 +58,8 @@ import exportToExcel, { scoreExcelFill, stageExcelFill } from './exportToExcel';
 
 const SCORE_KEYS = ['q1', 'q2', 'q3', 'q4', 'q5'];
 
-const averageScore = (row) => {
-  const scores = SCORE_KEYS
-    .map((key) => Number(row[key]))
-    .filter((value) => !Number.isNaN(value) && value > 0);
-  return scores.length
-    ? scores.reduce((sum, value) => sum + value, 0) / scores.length
-    : 0;
-};
+const hasScore = (row, star) =>
+  SCORE_KEYS.some((key) => Number(row[key]) === star);
 
 const FilterSection = ({ search, onSearch, status, onStatus, rating, onRating, stageOptions }) => {
   return (
@@ -90,8 +84,15 @@ const FilterSection = ({ search, onSearch, status, onStatus, rating, onRating, s
         styles={{ label: { fontSize: '0.8rem' } }}
       />
       <div>
-        <Text c="dimmed" size="xs" fw={500} mb={4}>Min. average rate</Text>
-        <Rating value={rating} onChange={onRating} />
+        <Group gap={8} mb={4} align="center">
+          <Text c="dimmed" size="xs" fw={500}>Filter by star rating</Text>
+          {rating > 0 && (
+            <Anchor component="button" type="button" size="xs" onClick={() => onRating(0)}>
+              Clear
+            </Anchor>
+          )}
+        </Group>
+        <Rating value={rating} onChange={(value) => onRating(value === rating ? 0 : value)} />
       </div>
     </Group>
   );
@@ -486,7 +487,7 @@ const Turnover = () => {
         const title = stageTitle(row.status, stages) ?? 'Pending';
         if (title !== status) return false;
       }
-      if (rating > 0 && averageScore(row) < rating) return false;
+      if (rating > 0 && !hasScore(row, rating)) return false;
       return true;
     });
   }, [responses, search, status, rating, stagesQuery.data]);
