@@ -86,7 +86,7 @@ const QuestionBreakdownCard = ({ type, items }) => {
       <Group justify="space-between" mb="md">
         <Text fw={600}>{meta.label}</Text>
         <Badge variant="light" color={meta.color} size="sm">
-          Avg {average.toFixed(1)}%
+          Avg {average.toFixed(1)}
         </Badge>
       </Group>
       <Stack gap="sm">
@@ -108,11 +108,11 @@ const QuestionBreakdownCard = ({ type, items }) => {
                 </Text>
               </Tooltip>
               <Text size="sm" fw={600}>
-                {percentages[index].toFixed(2)}%
+                {percentages[index].toFixed(2)}
               </Text>
             </Group>
             <Progress
-              value={percentages[index]}
+              value={(percentages[index] / 5) * 100}
               color={meta.color}
               size="sm"
               radius="xl"

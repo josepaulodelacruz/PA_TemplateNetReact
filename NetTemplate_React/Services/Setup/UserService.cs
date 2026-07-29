@@ -18,6 +18,11 @@ namespace NetTemplate_React.Services.Setup
         Task<Response> ChangeUserStatus(int id, bool isActive);
 
         Task<Response> SearchUser(string search);
+
+        Task<Response> GetEmployees();
+
+        Task<Response> AddEmployee(string username);
+
     }
 
     public class UserService : IUserService
@@ -229,6 +234,100 @@ namespace NetTemplate_React.Services.Setup
                         );
                     }
                 }
+            }
+        }
+
+        public async Task<Response> GetEmployees()
+        {
+            var dataTable = new DataTable();
+            StringBuilder CommandText = new StringBuilder();
+            CommandText.Append("[STP].[NSP_Users]");
+
+            using (SqlConnection con = new SqlConnection(_conString))
+            {
+                try
+                {
+                    await con.OpenAsync();
+
+                    using (SqlCommand cmd = new SqlCommand(CommandText.ToString(), con))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@FLAG", 0);
+
+                        using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
+                        {
+                            dataTable.Load(reader);
+                        }
+
+                        CommandText.Append("@FLAG=0");
+
+                        return new Response(
+                            success: true,
+                            debugScript: CommandText.ToString(),
+                            message: "Successfully fetch employeees",
+                            body: dataTable
+                        );
+                    }
+
+                } 
+                catch (Exception Ex)
+                {
+                    return new Response(
+                        success: false,
+                        debugScript: Ex.StackTrace,
+                        message: Ex.Message,
+                        body: null
+                    );
+                }
+
+            }
+        }
+
+        public async Task<Response> AddEmployee(string username)
+        {
+            var dataTable = new DataTable();
+            StringBuilder CommandText = new StringBuilder();
+            CommandText.Append("[STP].[NSP_Users]");
+
+            using (SqlConnection con = new SqlConnection(_conString))
+            {
+                try
+                {
+                    await con.OpenAsync();
+
+                    using (SqlCommand cmd = new SqlCommand(CommandText.ToString(), con))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@FLAG", 1);
+                        cmd.Parameters.AddWithValue("@USERNAME", username);
+
+                        await cmd.ExecuteNonQueryAsync();
+
+                        CommandText.Append("@FLAG=0, @USERNAME=" + username);
+
+                        return new Response(
+                            success: true,
+                            debugScript: CommandText.ToString(),
+                            message: "Successfully add access",
+                            body: dataTable
+                        );
+                    }
+
+                } 
+                catch (Exception Ex)
+                {
+                    return new Response(
+                        success: false,
+                        debugScript: Ex.StackTrace,
+                        message: Ex.Message,
+                        body: null
+                    );
+                }
+
             }
         }
     }

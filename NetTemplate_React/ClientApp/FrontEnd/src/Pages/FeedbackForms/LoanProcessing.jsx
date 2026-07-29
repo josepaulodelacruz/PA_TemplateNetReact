@@ -23,6 +23,8 @@ import {
   Drawer,
   Timeline,
   Divider,
+  Menu,
+  ActionIcon,
 } from '@mantine/core'
 import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
@@ -37,6 +39,8 @@ import {
   CheckCircle2Icon,
   ClockIcon,
   DownloadIcon,
+  ListFilterIcon,
+  CheckIcon,
 } from 'lucide-react'
 import moment from 'moment'
 import useFeedbackLoanProcessing from '~/hooks/HomeBuyerFeedback/useFeedbackLoanProcessing';
@@ -57,6 +61,12 @@ import { stageTitle, stageFill } from './stageUtils';
 import exportToExcel, { scoreExcelFill, stageExcelFill } from './exportToExcel';
 
 const SCORE_KEYS = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6'];
+
+const Q7_FILTER_OPTIONS = [
+  { value: 'all', label: 'Show all' },
+  { value: 'with', label: 'With comments' },
+  { value: 'empty', label: 'Empty comments' },
+];
 
 const hasScore = (row, star) =>
   SCORE_KEYS.some((key) => Number(row[key]) === star);
@@ -372,7 +382,41 @@ const EmptyCellHint = () => (
   <Text size="xs" c="dimmed" fs="italic">Click to add</Text>
 );
 
-const LoanProcessingTable = ({ rows, stages, onManage }) => {
+const ColumnCommentFilter = ({ value, onChange, label }) => {
+  const active = value !== 'all';
+  return (
+    <Menu shadow="md" width={190} position="bottom-start" withArrow>
+      <Menu.Target>
+        <ActionIcon
+          variant={active ? 'filled' : 'subtle'}
+          color={active ? 'indigo' : 'gray'}
+          size="sm"
+          radius="sm"
+          title={`Filter ${label} comments`}
+          onClick={(event) => event.stopPropagation()}
+        >
+          <ListFilterIcon size={14} />
+        </ActionIcon>
+      </Menu.Target>
+      <Menu.Dropdown onClick={(event) => event.stopPropagation()}>
+        <Menu.Label>Filter {label} comments</Menu.Label>
+        {Q7_FILTER_OPTIONS.map((option) => (
+          <Menu.Item
+            key={option.value}
+            leftSection={
+              value === option.value ? <CheckIcon size={14} /> : <span style={{ width: 14 }} />
+            }
+            onClick={() => onChange(option.value)}
+          >
+            {option.label}
+          </Menu.Item>
+        ))}
+      </Menu.Dropdown>
+    </Menu>
+  );
+};
+
+const LoanProcessingTable = ({ rows, stages, onManage, q7Filter, onQ7Filter }) => {
   const body = rows.map((row, index) => {
     const statusTitle = stageTitle(row.status, stages);
     return (
@@ -413,7 +457,7 @@ const LoanProcessingTable = ({ rows, stages, onManage }) => {
             fontWeight: 600,
           }}
         >
-          {statusTitle ?? 'Pending'}
+          {statusTitle}
         </Table.Td>
       </Table.Tr>
     );
@@ -437,7 +481,12 @@ const LoanProcessingTable = ({ rows, stages, onManage }) => {
           {SCORE_KEYS.map((key, i) => (
             <Table.Th key={key} style={{ ...excelHeader, width: 40 }}>Q{i + 1}</Table.Th>
           ))}
-          <Table.Th style={{ ...excelHeader, minWidth: 240 }}>Q7</Table.Th>
+          <Table.Th style={{ ...excelHeader, minWidth: 240 }}>
+            <Group gap={6} wrap="nowrap" justify="space-between">
+              <span>Q7</span>
+              <ColumnCommentFilter value={q7Filter} onChange={onQ7Filter} label="Q7" />
+            </Group>
+          </Table.Th>
           <Table.Th style={{ ...excelHeader, minWidth: 240 }}>Concern</Table.Th>
           <Table.Th style={{ ...excelHeader, minWidth: 240 }}>Action Taken</Table.Th>
           <Table.Th style={excelHeader}>Status</Table.Th>
@@ -460,6 +509,7 @@ const LoanProcessing = () => {
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState(null);
   const [rating, setRating] = useState(0);
+  const [q7Filter, setQ7Filter] = useState('all');
   const [selectedRow, setSelectedRow] = useState(null);
   const [questionsOpened, setQuestionsOpened] = useState(false);
 
@@ -485,9 +535,14 @@ const LoanProcessing = () => {
         if (title !== status) return false;
       }
       if (rating > 0 && !hasScore(row, rating)) return false;
+      if (q7Filter !== 'all') {
+        const hasComment = String(row.q7 ?? '').trim().length > 0;
+        if (q7Filter === 'with' && !hasComment) return false;
+        if (q7Filter === 'empty' && hasComment) return false;
+      }
       return true;
     });
-  }, [responses, search, status, rating, stagesQuery.data]);
+  }, [responses, search, status, rating, q7Filter, stagesQuery.data]);
 
   const items = [
     { title: "HomeBuyer Feedback", href: StringRoutes.feedback },
@@ -616,7 +671,13 @@ const LoanProcessing = () => {
             </Stack>
           ) : (
             <ScrollArea h="calc(100dvh - 290px)">
-              <LoanProcessingTable rows={filteredRows} stages={stages} onManage={setSelectedRow} />
+              <LoanProcessingTable
+                rows={filteredRows}
+                stages={stages}
+                onManage={setSelectedRow}
+                q7Filter={q7Filter}
+                onQ7Filter={setQ7Filter}
+              />
             </ScrollArea>
           )}
         </Card>

@@ -4,6 +4,7 @@ enum QueryKeys {
   //users
   USER_ID = 'setup_user',
   USER_LIST = 'setup_user-list',
+  USER_EMPLOYEES = 'setup_user-employees',
   
   //permision
   USER_PERMISSION = 'setup_user-permission',

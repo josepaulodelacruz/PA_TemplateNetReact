@@ -88,6 +88,27 @@ namespace NetTemplate_React.Controllers.Setup
         public void Delete(int id)
         {
         }
+
+        [HttpGet("employees")]
+        public async Task<IActionResult> GetEmployees()
+        {
+            var response = await _service.GetEmployees();
+
+            if (!response.Success) return new BadRequestObjectResult(response);
+
+            return new OkObjectResult(response);
+        }
+
+        [HttpPost("employees")]
+        public async Task<IActionResult> AddEmployeeAccess([FromQuery] string username)
+        {
+            var response = await _service.AddEmployee(username);
+
+            if (!response.Success) return new BadRequestObjectResult(response);
+
+            return new OkObjectResult(response);
+        }
+
     }
 
 }

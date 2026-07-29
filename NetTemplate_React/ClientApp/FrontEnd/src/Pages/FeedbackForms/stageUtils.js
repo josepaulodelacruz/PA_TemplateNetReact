@@ -12,5 +12,8 @@ export const stageTitle = (status, stages = []) => {
 
 // Excel-style fill for the Status column: DONE is green, everything else
 // (ONGOING, Pending) is yellow.
-export const stageFill = (title) =>
-  title?.toUpperCase() === 'DONE' ? FILL_GOOD : FILL_WARN;
+export const stageFill = (title) => {
+  if (!title) return;
+
+  return title?.toUpperCase() === 'DONE' ? FILL_GOOD : FILL_WARN;
+}

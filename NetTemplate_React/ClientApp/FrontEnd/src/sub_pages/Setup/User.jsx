@@ -1,6 +1,5 @@
 import {
-  Container,
-  Title,
+  Container, Title,
   TextInput,
   Box,
   Card,
@@ -8,12 +7,15 @@ import {
   Button,
 } from "@mantine/core";
 import UserTable from "./components/UserTable";
+import AddUserModal from "./components/AddUserModal";
 import { useState, useRef } from 'react';
+import { useDisclosure } from "@mantine/hooks";
 import { SearchIcon } from "lucide-react";
 
 const User = () => {
   const childRef = useRef();
   const [value, setValue] = useState("");
+  const [opened, { open, close }] = useDisclosure(false);
 
   const handleSearch = () => {
     childRef.current?.handleEvent();
@@ -21,9 +23,13 @@ const User = () => {
 
   return (
     <Container fluid>
-      <Group>
+      <Group justify="space-between">
         <Title size={50} fw={700} style={{ viewTransitionName: 'usr-header' }}>Users Accounts</Title>
+        <Button variant='light' onClick={open}>
+          ADD USER
+        </Button>
       </Group>
+      <AddUserModal opened={opened} onClose={close} />
       <Group>
         <Box
           py={20}
