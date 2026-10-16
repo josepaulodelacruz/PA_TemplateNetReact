@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
-import StringRoutes from '~/constants/StringRoutes';
+import StringRoutes from '~/Constants/StringRoutes';
 import DashboardLayout from "~/layouts/DasboardLayout";
 import Dashboard from "~/pages/Dashboard";
 
@@ -22,7 +22,11 @@ import LoanProcessing from "./Pages/FeedbackForms/LoanProcessing";
 import Turnover from "./Pages/FeedbackForms/Turnover";
 import UserGuidePage from "./Pages/FeedbackForms/UserGuidePage";
 import RequirePermission from "~/components/RequirePermission";
-import ModuleNames from "~/constants/ModuleNames";
+import ModuleNames from "~/Constants/ModuleNames";
+import DocumentSetup from "./Pages/Setup/DocumentSetup";
+import Document from "./Pages/Setup/DocumentSetup/Document";
+import DocumentCategory from "./Pages/Setup/DocumentSetup/DocumentCategory";
+import Matrix from "./Pages/Setup/DocumentSetup/Matrix";
 
 const DASHBOARD_ROUTES = [
 
@@ -74,6 +78,30 @@ const DASHBOARD_ROUTES = [
             ]
           }
         ]
+      },
+      {
+        element: <RequirePermission module={ModuleNames.modules} />,
+        children: [
+          {
+            path: StringRoutes.buyers_document,
+            Component: DocumentSetup,
+            children: [
+              {
+                path: StringRoutes.matrix,
+                Component: Matrix
+              },
+              {
+                path: StringRoutes.document,
+                Component: Document
+              },
+              {
+                path: StringRoutes.category,
+                Component: DocumentCategory 
+              }
+
+            ]
+          }
+        ],
       }
     ]
   },

@@ -12,9 +12,23 @@ enum QueryKeys {
   //HISTORY
   USER_HISTORY = 'setup_user-history',
 
-  //modules 
+  //modules
   MODULE_ITEMS = 'setup_module-items',
   MODULE_ITEM_ID = 'setup_module-item-id',
+
+  //document setup
+  DOCUMENT_CATEGORIES = 'setup_document-categories',
+  DOCUMENT_CATEGORY_ID = 'setup_document-category-id',
+  DOCUMENT_SUB_CATEGORIES = 'setup_document-sub-categories',
+  DOCUMENT_OPTIONS = 'setup_document-options',
+  DOCUMENT_LABELS = 'setup_document_labels',
+  DOCUMENT_FILES = 'setup_document_files',
+
+  //document setup - matrix
+  MATRIX_SCHEMES = 'setup_matrix_schemes',
+  MATRIX_LOOKUPS = 'setup_matrix_lookups',
+  MATRIX_CHECKLIST = 'setup_matrix_checklist',
+  MATRIX_UNMAPPED = 'setup_matrix_unmapped',
 
   //Reports
   REPORTS_CRASH = 'reports_crash',

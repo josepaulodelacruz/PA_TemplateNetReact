@@ -143,6 +143,7 @@ const DashboardLayout = () => {
               <NavItems leftIcon={<WrenchIcon size={16} />} label="Setup">
                 {showUsers && <NavLink to={StringRoutes.users}>Users</NavLink>}
                 {showModules && <NavLink to={StringRoutes.modules}>Modules</NavLink>}
+                <NavLink to={`${StringRoutes.buyers_document}/document`}>Document Setup</NavLink>
               </NavItems>
             </>
           )}

@@ -18,6 +18,11 @@ class StringRoutes {
   static users_permission = '/setup/users/tab/permission';
   static users_history = '/setup/users/tab/history';
 
+  static buyers_document = '/setup/document-setup'
+  static matrix = 'matrix';
+  static document = 'document'
+  static category = 'category'
+
 
   static modules = '/setup/modules';
   static modules_form = '/setup/modules/form';

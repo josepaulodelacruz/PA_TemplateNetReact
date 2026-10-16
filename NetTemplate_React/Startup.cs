@@ -79,6 +79,8 @@ namespace NetTemplate_React
             services.AddScoped<IUserService, UserService>(options => new UserService(conString: conString, configuration: Configuration));
             services.AddScoped<IUserPermissionService, UserPermissionService>(options => new UserPermissionService(conString: conString, config: Configuration));
             services.AddScoped<IUserHistoryService, UserHistoryService>(options => new UserHistoryService(conString: conString, logger: new LoggerFactory()));
+            services.AddScoped<IDocumentSetupService, DocumentSetupService>(options => new DocumentSetupService(conString: conString, config: Configuration));
+            services.AddScoped<IFileSetupService, FileSetupService>(options => new FileSetupService(conString: conString));
 
             //reports
             services.AddScoped<ICrashReportService, CrashReportService>(options => new CrashReportService(conString: conString, logger: new LoggerFactory()));
